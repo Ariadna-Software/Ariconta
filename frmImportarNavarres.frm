@@ -1,0 +1,2185 @@
+VERSION 5.00
+Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
+Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+Begin VB.Form frmImportarNavarres 
+   BorderStyle     =   3  'Fixed Dialog
+   Caption         =   "Importar facturas CONSUM"
+   ClientHeight    =   9300
+   ClientLeft      =   45
+   ClientTop       =   330
+   ClientWidth     =   12195
+   Icon            =   "frmImportarNavarres.frx":0000
+   LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
+   ScaleHeight     =   9300
+   ScaleWidth      =   12195
+   ShowInTaskbar   =   0   'False
+   StartUpPosition =   2  'CenterScreen
+   Begin MSComctlLib.ListView ListView1 
+      Height          =   1815
+      Index           =   0
+      Left            =   120
+      TabIndex        =   19
+      Top             =   840
+      Width           =   2895
+      _ExtentX        =   5106
+      _ExtentY        =   3201
+      View            =   3
+      LabelEdit       =   1
+      LabelWrap       =   -1  'True
+      HideSelection   =   -1  'True
+      FullRowSelect   =   -1  'True
+      _Version        =   393217
+      ForeColor       =   -2147483640
+      BackColor       =   -2147483643
+      BorderStyle     =   1
+      Appearance      =   1
+      NumItems        =   2
+      BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Text            =   "Cod"
+         Object.Width           =   1109
+      EndProperty
+      BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   1
+         Text            =   "Nombre"
+         Object.Width           =   3440
+      EndProperty
+   End
+   Begin VB.CommandButton cmdAux 
+      Caption         =   "+"
+      Height          =   320
+      Index           =   2
+      Left            =   5280
+      TabIndex        =   16
+      Top             =   7560
+      Width           =   135
+   End
+   Begin VB.CommandButton cmdAux 
+      Caption         =   "+"
+      Height          =   320
+      Index           =   1
+      Left            =   3360
+      TabIndex        =   13
+      Top             =   7560
+      Width           =   135
+   End
+   Begin VB.CommandButton cmdAux 
+      Caption         =   "+"
+      Height          =   320
+      Index           =   0
+      Left            =   840
+      TabIndex        =   12
+      Top             =   5640
+      Width           =   135
+   End
+   Begin VB.TextBox txtAux2 
+      Appearance      =   0  'Flat
+      BorderStyle     =   0  'None
+      Height          =   290
+      Index           =   2
+      Left            =   2400
+      MaxLength       =   30
+      TabIndex        =   2
+      Tag             =   "Centro|N|N|0||importnavconcepcentro|codconcepto|0|S|"
+      Text            =   "Dato2"
+      Top             =   5640
+      Width           =   1395
+   End
+   Begin VB.CommandButton cmdAceptar 
+      Caption         =   "&Aceptar"
+      Height          =   375
+      Left            =   9780
+      TabIndex        =   4
+      Top             =   8820
+      Visible         =   0   'False
+      Width           =   1035
+   End
+   Begin VB.CommandButton cmdCancelar 
+      Cancel          =   -1  'True
+      Caption         =   "&Cancelar"
+      Height          =   375
+      Left            =   10980
+      TabIndex        =   5
+      Top             =   8820
+      Visible         =   0   'False
+      Width           =   1035
+   End
+   Begin VB.TextBox txtAux2 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000018&
+      BorderStyle     =   0  'None
+      Enabled         =   0   'False
+      Height          =   290
+      Index           =   1
+      Left            =   900
+      MaxLength       =   30
+      TabIndex        =   1
+      Text            =   "Dato2"
+      Top             =   5640
+      Width           =   1395
+   End
+   Begin VB.TextBox txtAux2 
+      Appearance      =   0  'Flat
+      BorderStyle     =   0  'None
+      Height          =   290
+      Index           =   0
+      Left            =   60
+      MaxLength       =   7
+      TabIndex        =   0
+      Tag             =   "Centro|N|N|0||importnavconcepcentro|codcentro|0|S|"
+      Text            =   "Dat"
+      Top             =   5640
+      Width           =   800
+   End
+   Begin VB.CommandButton cmdRegresar 
+      Caption         =   "&Regresar"
+      Height          =   375
+      Left            =   10980
+      TabIndex        =   8
+      Top             =   8820
+      Visible         =   0   'False
+      Width           =   1035
+   End
+   Begin VB.Frame Frame1 
+      Height          =   555
+      Left            =   120
+      TabIndex        =   6
+      Top             =   8640
+      Width           =   4665
+      Begin VB.Label lblIndicador 
+         Alignment       =   2  'Center
+         Caption         =   "Label2"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   7
+         Top             =   240
+         Width           =   4335
+      End
+   End
+   Begin MSComctlLib.Toolbar Toolbar1 
+      Align           =   1  'Align Top
+      Height          =   420
+      Left            =   0
+      TabIndex        =   9
+      Top             =   0
+      Width           =   12195
+      _ExtentX        =   21511
+      _ExtentY        =   741
+      ButtonWidth     =   609
+      ButtonHeight    =   582
+      AllowCustomize  =   0   'False
+      Appearance      =   1
+      _Version        =   393216
+      BeginProperty Buttons {66833FE8-8583-11D1-B16A-00C0F0283628} 
+         NumButtons      =   22
+         BeginProperty Button1 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Buscar"
+            ImageIndex      =   1
+         EndProperty
+         BeginProperty Button2 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Ver todos"
+            ImageIndex      =   2
+         EndProperty
+         BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button4 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button5 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button6 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Nuevo"
+            Object.Tag             =   "2"
+         EndProperty
+         BeginProperty Button7 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Modificar"
+            Object.Tag             =   "2"
+         EndProperty
+         BeginProperty Button8 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Eliminar"
+            Object.Tag             =   "2"
+         EndProperty
+         BeginProperty Button9 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button10 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Conceptos"
+         EndProperty
+         BeginProperty Button11 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   " "
+            Style           =   3
+         EndProperty
+         BeginProperty Button12 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Importar fichero"
+         EndProperty
+         BeginProperty Button13 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button14 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button15 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button16 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button17 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Salir"
+            ImageIndex      =   15
+         EndProperty
+         BeginProperty Button18 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button19 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Primero"
+            ImageIndex      =   6
+         EndProperty
+         BeginProperty Button20 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Anterior"
+            ImageIndex      =   7
+         EndProperty
+         BeginProperty Button21 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Siguiente"
+            ImageIndex      =   8
+         EndProperty
+         BeginProperty Button22 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Object.ToolTipText     =   "Último"
+            ImageIndex      =   9
+         EndProperty
+      EndProperty
+      Begin VB.CheckBox chkVistaPrevia 
+         Caption         =   "Vista previa"
+         Height          =   195
+         Left            =   9840
+         TabIndex        =   10
+         Top             =   120
+         Visible         =   0   'False
+         Width           =   1215
+      End
+   End
+   Begin MSAdodcLib.Adodc adodc1 
+      Height          =   375
+      Left            =   5970
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   2055
+      _ExtentX        =   3625
+      _ExtentY        =   661
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   8
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   ""
+      OLEDBString     =   ""
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   ""
+      Caption         =   "Adodc1"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin VB.TextBox txtAux2 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000018&
+      BorderStyle     =   0  'None
+      Enabled         =   0   'False
+      Height          =   290
+      Index           =   3
+      Left            =   3420
+      MaxLength       =   30
+      TabIndex        =   14
+      Text            =   "Dato2"
+      Top             =   7560
+      Width           =   1395
+   End
+   Begin VB.TextBox txtAux2 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000018&
+      BorderStyle     =   0  'None
+      Enabled         =   0   'False
+      Height          =   290
+      Index           =   5
+      Left            =   5520
+      MaxLength       =   30
+      TabIndex        =   15
+      Text            =   "Dato2"
+      Top             =   5640
+      Width           =   1395
+   End
+   Begin VB.TextBox txtAux2 
+      Appearance      =   0  'Flat
+      BorderStyle     =   0  'None
+      Height          =   290
+      Index           =   4
+      Left            =   4320
+      TabIndex        =   3
+      Tag             =   "Centro|T|N|||importnavconcepcentro|codmacta|||"
+      Text            =   "Dat"
+      Top             =   7560
+      Width           =   800
+   End
+   Begin MSDataGridLib.DataGrid DataGrid1 
+      Bindings        =   "frmImportarNavarres.frx":000C
+      Height          =   5505
+      Left            =   120
+      TabIndex        =   11
+      Top             =   3120
+      Width           =   11955
+      _ExtentX        =   21087
+      _ExtentY        =   9710
+      _Version        =   393216
+      AllowUpdate     =   0   'False
+      BorderStyle     =   0
+      HeadLines       =   1
+      RowHeight       =   15
+      BeginProperty HeadFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ColumnCount     =   2
+      BeginProperty Column00 
+         DataField       =   ""
+         Caption         =   ""
+         BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
+            Type            =   0
+            Format          =   ""
+            HaveTrueFalseNull=   0
+            FirstDayOfWeek  =   0
+            FirstWeekOfYear =   0
+            LCID            =   3082
+            SubFormatType   =   0
+         EndProperty
+      EndProperty
+      BeginProperty Column01 
+         DataField       =   ""
+         Caption         =   ""
+         BeginProperty DataFormat {6D835690-900B-11D0-9484-00A0C91110ED} 
+            Type            =   0
+            Format          =   ""
+            HaveTrueFalseNull=   0
+            FirstDayOfWeek  =   0
+            FirstWeekOfYear =   0
+            LCID            =   3082
+            SubFormatType   =   0
+         EndProperty
+      EndProperty
+      SplitCount      =   1
+      BeginProperty Split0 
+         AllowFocus      =   0   'False
+         AllowRowSizing  =   0   'False
+         AllowSizing     =   0   'False
+         BeginProperty Column00 
+         EndProperty
+         BeginProperty Column01 
+         EndProperty
+      EndProperty
+   End
+   Begin MSComctlLib.ListView ListView1 
+      Height          =   1815
+      Index           =   1
+      Left            =   3120
+      TabIndex        =   20
+      Top             =   840
+      Width           =   3855
+      _ExtentX        =   6800
+      _ExtentY        =   3201
+      View            =   3
+      LabelEdit       =   1
+      LabelWrap       =   -1  'True
+      HideSelection   =   -1  'True
+      FullRowSelect   =   -1  'True
+      _Version        =   393217
+      ForeColor       =   -2147483640
+      BackColor       =   -2147483643
+      BorderStyle     =   1
+      Appearance      =   1
+      NumItems        =   2
+      BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Text            =   "Cod."
+         Object.Width           =   1138
+      EndProperty
+      BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   1
+         Text            =   "Concepto"
+         Object.Width           =   4789
+      EndProperty
+   End
+   Begin MSComctlLib.ListView ListView1 
+      Height          =   1815
+      Index           =   2
+      Left            =   7080
+      TabIndex        =   21
+      Top             =   840
+      Width           =   5055
+      _ExtentX        =   8916
+      _ExtentY        =   3201
+      View            =   3
+      LabelEdit       =   1
+      LabelWrap       =   -1  'True
+      HideSelection   =   -1  'True
+      FullRowSelect   =   -1  'True
+      _Version        =   393217
+      ForeColor       =   -2147483640
+      BackColor       =   -2147483643
+      BorderStyle     =   1
+      Appearance      =   1
+      NumItems        =   3
+      BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Text            =   "Fecha"
+         Object.Width           =   2963
+      EndProperty
+      BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   1
+         Text            =   "Centro"
+         Object.Width           =   1147
+      EndProperty
+      BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   2
+         Text            =   "Fichero"
+         Object.Width           =   4066
+      EndProperty
+   End
+   Begin VB.Label Label4 
+      AutoSize        =   -1  'True
+      Caption         =   "Histórico ficheros importados"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00004040&
+      Height          =   195
+      Index           =   3
+      Left            =   7200
+      TabIndex        =   24
+      Top             =   600
+      Width           =   2490
+   End
+   Begin VB.Label Label4 
+      AutoSize        =   -1  'True
+      Caption         =   "Cuentas por concepto y centro"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000080&
+      Height          =   195
+      Index           =   2
+      Left            =   120
+      TabIndex        =   23
+      Top             =   2400
+      Width           =   2595
+   End
+   Begin VB.Label Label4 
+      AutoSize        =   -1  'True
+      Caption         =   "Conceptos"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00008000&
+      Height          =   195
+      Index           =   1
+      Left            =   3120
+      TabIndex        =   22
+      Top             =   600
+      Width           =   885
+   End
+   Begin VB.Label Label4 
+      AutoSize        =   -1  'True
+      Caption         =   "Centros CONSUM"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00800000&
+      Height          =   195
+      Index           =   0
+      Left            =   120
+      TabIndex        =   18
+      Top             =   600
+      Width           =   1410
+   End
+   Begin VB.Label Label4 
+      AutoSize        =   -1  'True
+      Caption         =   "Cuentas por concepto y centro"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000080&
+      Height          =   195
+      Index           =   23
+      Left            =   120
+      TabIndex        =   17
+      Top             =   2760
+      Width           =   2595
+   End
+   Begin VB.Menu mnOpciones 
+      Caption         =   "&Opciones"
+      Begin VB.Menu mnBuscar 
+         Caption         =   "&Buscar"
+         Shortcut        =   ^F
+      End
+      Begin VB.Menu mnVerTodos 
+         Caption         =   "&Ver todos"
+         Shortcut        =   ^B
+      End
+      Begin VB.Menu mnBarra1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnNuevo 
+         Caption         =   "&Nuevo"
+         Shortcut        =   ^N
+      End
+      Begin VB.Menu mnModificar 
+         Caption         =   "&Modificar"
+         Shortcut        =   ^M
+      End
+      Begin VB.Menu mnEliminar 
+         Caption         =   "&Eliminar"
+         Shortcut        =   ^E
+      End
+      Begin VB.Menu mnBarra2 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnSalir 
+         Caption         =   "&Salir"
+         Shortcut        =   ^S
+      End
+   End
+End
+Attribute VB_Name = "frmImportarNavarres"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+
+Private WithEvents frmB As frmBuscaGrid
+Attribute frmB.VB_VarHelpID = -1
+Private WithEvents frmC As frmColCtas
+Attribute frmC.VB_VarHelpID = -1
+
+
+Private CadenaConsulta As String
+Private TextoBusqueda As String
+Dim CadAncho As Boolean  'Para cuando llamemos al al form de lineas
+Dim Modo As Byte
+Dim jj As Long
+Dim SQL As String
+
+Dim It As ListItem
+
+Dim ImporteFacturaImportada As Currency
+Dim FechaFraImportada As Date
+
+'----------------------------------------------
+'----------------------------------------------
+'   Deshabilitamos todos los botones menos
+'   el de salir
+'   Ademas mostramos aceptar y cancelar
+'   Modo 0->  Normal
+'   Modo 1 -> Lineas  INSERTAR
+'   Modo 2 -> Lineas MODIFICAR
+'   Modo 3 -> Lineas BUSCAR
+'----------------------------------------------
+'----------------------------------------------
+
+Private Sub PonerModo(vModo)
+Dim B As Boolean
+    Modo = vModo
+    
+    B = (Modo = 0)
+    
+    For jj = 0 To 5
+        txtAux2(jj).visible = Not B
+        If jj < 3 Then cmdAux(jj).visible = Not B
+    Next jj
+    
+    mnOpciones.Enabled = B
+    Toolbar1.Buttons(1).Enabled = B
+    Toolbar1.Buttons(2).Enabled = B
+    cmdAceptar.visible = Not B
+    cmdCancelar.visible = Not B
+    'DataGrid1.Enabled = b
+    
+    'Si es regresar
+'    If DatosADevolverBusqueda <> "" Then
+'        cmdRegresar.Visible = b
+'    End If
+    'Si estamo mod or insert
+    If Modo = 2 Then
+       txtAux2(0).BackColor = &H80000018
+       txtAux2(2).BackColor = &H80000018
+       Else
+        txtAux2(0).BackColor = &H80000005
+        txtAux2(2).BackColor = &H80000005
+    End If
+    txtAux2(0).Enabled = (Modo <> 2)
+    txtAux2(0).Enabled = (Modo <> 2)
+    txtAux2(2).Enabled = txtAux2(0).Enabled
+    txtAux2(2).BackColor = txtAux2(0).BackColor
+    cmdAux(0).Enabled = txtAux2(0).Enabled
+    cmdAux(1).Enabled = txtAux2(0).Enabled
+    
+End Sub
+
+Private Sub BotonAnyadir()
+    Dim anc As Single
+
+    lblIndicador.Caption = "INSERTANDO"
+    'Situamos el grid al final
+    DataGrid1.AllowAddNew = True
+    If Not Adodc1.Recordset.EOF Then
+        DataGrid1.HoldFields
+        Adodc1.Recordset.MoveLast
+        DataGrid1.Row = DataGrid1.Row + 1
+    End If
+    
+    
+   
+    If DataGrid1.Row < 0 Then
+        anc = DataGrid1.Top + 210
+        Else
+        anc = DataGrid1.RowTop(DataGrid1.Row) + DataGrid1.Top
+    End If
+    txtAux2(0).Text = ""
+    For jj = 1 To 5
+        txtAux2(jj).Text = ""
+    Next jj
+    LLamaLineas anc, 0
+    
+    
+    'Ponemos el foco
+    txtAux2(0).SetFocus
+    
+'    If FormularioHijoModificado Then
+'        CargaGrid
+'        BotonAnyadir
+'        Else
+'            'cmdCancelar.SetFocus
+'            If Not Adodc1.Recordset.EOF Then _
+'                Adodc1.Recordset.MoveFirst
+'    End If
+End Sub
+
+
+
+Private Sub BotonVerTodos()
+    DataGrid1.Enabled = False
+    espera 0.1
+    TextoBusqueda = ""
+    CargaGrid ""
+    DataGrid1.Enabled = True
+End Sub
+
+Private Sub BotonBuscar()
+    DataGrid1.Enabled = False
+    CargaGrid " importnavconcepcentro.codcentro = -1"
+    DataGrid1.Enabled = True
+    'Buscar
+    For jj = 0 To 5
+        txtAux2(jj).Text = ""
+    Next jj
+    LLamaLineas DataGrid1.Top + 206, 2
+    txtAux2(0).SetFocus
+End Sub
+
+Private Sub BotonModificar()
+    '---------
+    'MODIFICAR
+    '----------
+    Dim Cad As String
+    Dim anc As Single
+    Dim I As Integer
+    If Adodc1.Recordset.EOF Then Exit Sub
+    'If Adodc1.Recordset.RecordCount < 1 Then Exit Sub
+
+
+    Screen.MousePointer = vbHourglass
+    Me.lblIndicador.Caption = "MODIFICAR"
+    
+    If DataGrid1.Bookmark < DataGrid1.FirstRow Or DataGrid1.Bookmark > (DataGrid1.FirstRow + DataGrid1.VisibleRows - 1) Then
+        I = DataGrid1.Bookmark - DataGrid1.FirstRow
+        DataGrid1.Scroll 0, I
+        DataGrid1.Refresh
+    End If
+    
+    If DataGrid1.Row < 0 Then
+        anc = DataGrid1.Top  '320
+        Else
+        anc = DataGrid1.RowTop(DataGrid1.Row) + DataGrid1.Top
+    End If
+
+    'Llamamos al form
+    For jj = 0 To 5
+        txtAux2(jj).Text = DataGrid1.Columns(jj).Text
+    Next jj
+
+    
+    LLamaLineas anc, 1
+
+   
+    Screen.MousePointer = vbDefault
+End Sub
+
+Private Sub LLamaLineas(alto As Single, xModo As Byte)
+    DeseleccionaGrid
+    PonerModo xModo + 1
+    'Fijamos el ancho
+    For jj = 0 To 5
+        txtAux2(jj).Top = alto
+        If jj < 3 Then cmdAux(jj).Top = alto
+    Next jj
+    
+End Sub
+
+
+
+
+Private Sub BotonEliminar()
+Dim SQL As String
+    On Error GoTo Error2
+    'Ciertas comprobaciones
+    If Adodc1.Recordset.EOF Then Exit Sub
+    If Not SepuedeBorrar Then Exit Sub
+    
+    '### a mano
+    SQL = "Seguro que desea eliminar la linea de histórico:" & vbCrLf
+    SQL = SQL & vbCrLf & "Inmovilizado: " & Adodc1.Recordset.Fields(0)
+    SQL = SQL & vbCrLf & "Denominación: " & Adodc1.Recordset.Fields(1)
+    SQL = SQL & vbCrLf & "Fecha       : " & Adodc1.Recordset.Fields(2)
+    SQL = SQL & vbCrLf & "Importe(€)  : " & Adodc1.Recordset.Fields(3)
+    If MsgBox(SQL, vbQuestion + vbYesNoCancel) = vbYes Then
+        'Hay que eliminar
+        SQL = "Delete from importnavconcepcentro where codinmov=" & Adodc1.Recordset!Codinmov
+        SQL = SQL & " AND fechainm ='" & Format(Adodc1.Recordset!fechainm, FormatoFecha) & "';"
+        Conn.Execute SQL
+        CargaGrid ""
+        Adodc1.Recordset.Cancel
+    End If
+    Exit Sub
+Error2:
+        Screen.MousePointer = vbDefault
+        MuestraError Err.Number, "Eliminando registro", Err.Description
+End Sub
+
+
+
+
+
+Private Sub cmdAceptar_Click()
+Dim I As Integer
+Dim CadB As String
+Select Case Modo
+    Case 1
+    If DatosOk Then
+            '-----------------------------------------
+            'Hacemos insertar
+            If InsertarDesdeForm(Me) Then
+                Conn.Execute "commit"
+                'MsgBox "Registro insertado.", vbInformation
+                CargaGrid
+                BotonAnyadir
+            End If
+        End If
+    Case 2
+            'Modificar
+            If DatosOk Then
+                '-----------------------------------------
+                'Hacemos insertar
+                If ModificaDesdeFormulario(Me) Then
+                    Conn.Execute "commit"
+                    I = Adodc1.Recordset.Fields(0)
+                    PonerModo 0
+                    CargaGrid
+                    Adodc1.Recordset.Find (Adodc1.Recordset.Fields(0).Name & " =" & I)
+                End If
+            End If
+    Case 3
+        'HacerBusqueda
+        CadB = ObtenerBusqueda(Me)
+        
+        'Para el texto
+        TextoBusqueda = ""
+        If txtAux2(0).Text <> "" Then TextoBusqueda = TextoBusqueda & "Cod. Inmov " & txtAux2(0).Text
+        If txtAux2(2).Text <> "" Then TextoBusqueda = TextoBusqueda & "Fecha " & txtAux2(2).Text
+        If txtAux2(3).Text <> "" Then TextoBusqueda = TextoBusqueda & "Porcentaje " & txtAux2(3).Text
+        
+            
+        
+        If CadB <> "" Then
+            PonerModo 0
+            DataGrid1.Enabled = False
+            CargaGrid CadB
+            DataGrid1.Enabled = True
+        End If
+    End Select
+
+
+End Sub
+
+Private Sub cmdAux_Click(Index As Integer)
+    Screen.MousePointer = vbHourglass
+    
+    If Index = 2 Then
+        'Cunetas
+        Set frmC = New frmColCtas
+        frmC.DatosADevolverBusqueda = "0|1"
+        frmC.ConfigurarBalances = 3  'NUEVO
+        SQL = ""
+        frmC.Show vbModal
+        Set frmC = Nothing
+        jj = 4
+    Else
+        Set frmB = New frmBuscaGrid
+        frmB.vSelElem = 1
+        frmB.vDevuelve = "0|1|"
+        If Index = 0 Then
+            'Cod Diag.|idDiag|N|10·   importnavcentros CodCentro Descripcion
+            SQL = "Centro|CodCentro|N|20·"
+            SQL = SQL & "Descripcion|Descripcion|T|65·"
+            frmB.vTabla = "importnavcentros"
+            frmB.vTitulo = "Centros"
+            jj = 0
+        Else
+            'importnavconceptos concepto  descripcion
+            SQL = "Codigo|concepto|N|20·"
+            SQL = SQL & "Descripcion|Descripcion|T|65·"
+            frmB.vTabla = "importnavconceptos"
+            frmB.vTitulo = "Conceptos facturas"
+            jj = 2
+        End If
+        frmB.VCampos = SQL
+        frmB.vSQL = ""
+        SQL = ""
+        frmB.Show vbModal
+        Set frmB = Nothing
+    End If
+    If SQL <> "" Then
+        txtAux2(jj).Text = RecuperaValor(SQL, 1)
+        txtAux2(jj + 1).Text = RecuperaValor(SQL, 2)
+    End If
+End Sub
+
+Private Sub cmdCancelar_Click()
+Select Case Modo
+Case 1
+    DataGrid1.AllowAddNew = False
+    'CargaGrid
+    If Not Adodc1.Recordset.EOF Then Adodc1.Recordset.MoveFirst
+    
+Case 3
+    CargaGrid
+End Select
+PonerModo 0
+lblIndicador.Caption = ""
+TextoBusqueda = ""
+DataGrid1.SetFocus
+End Sub
+
+'Private Sub cmdRegresar_Click()
+'Dim cad As String
+'
+'If adodc1.Recordset.EOF Then
+'    MsgBox "Ningún registro a devolver.", vbExclamation
+'    Exit Sub
+'End If
+'
+'cad = adodc1.Recordset.Fields(0) & "|"
+'cad = cad & adodc1.Recordset.Fields(1) & "|"
+'cad = cad & adodc1.Recordset.Fields(2) & "|"
+'RaiseEvent DatoSeleccionado(cad)
+'Unload Me
+'End Sub
+
+Private Sub DataGrid1_DblClick()
+'If cmdRegresar.Visible Then cmdRegresar_Click
+End Sub
+
+Private Sub Form_Activate()
+    Screen.MousePointer = vbDefault
+    If ListView1(0).ListItems.Count = 0 Then
+        CargaCentros
+        CargaConceptos
+        CargaHistorico
+    End If
+End Sub
+
+
+Private Sub Form_Load()
+    Me.Icon = frmPpal.Icon
+          ' ICONITOS DE LA BARRA
+    With Me.Toolbar1
+        .ImageList = frmPpal.imgListComun
+        .Buttons(1).Image = 1
+        .Buttons(2).Image = 2
+        .Buttons(6).Image = 3
+        .Buttons(7).Image = 4
+        .Buttons(8).Image = 5
+        
+        
+        
+        .Buttons(10).Image = 12
+        .Buttons(12).Image = 13   '11
+        
+        .Buttons(17).Image = 15
+        
+        '.Buttons(14).Image = 6
+        '.Buttons(15).Image = 7
+        '.Buttons(16).Image = 8
+        '.Buttons(17).Image = 9
+    End With
+
+    Set miTag = New CTag
+    '## A mano
+    'Vemos como esta guardado el valor del check
+    chkVistaPrevia.Value = CheckValueLeer(Name)
+'    'Bloqueo de tabla, cursor type
+'    Adodc1.UserName = vUsu.Login
+'    Adodc1.password = vUsu.Passwd
+    
+    'cmdRegresar.Visible = (DatosADevolverBusqueda <> "")
+    
+    DespalzamientoVisible False
+    PonerModo 0
+    CadAncho = False
+    PonerOpcionesMenu  'En funcion del usuario
+    'Cadena consulta
+    CadenaConsulta = "select  importnavconcepcentro.codcentro,importnavcentros.Descripcion, codconcepto,"
+    CadenaConsulta = CadenaConsulta & " importnavconceptos.descripcion,importnavconcepcentro.codmacta,nommacta"
+    CadenaConsulta = CadenaConsulta & " from importnavconcepcentro inner join cuentas on importnavconcepcentro.codmacta=cuentas.codmacta"
+    CadenaConsulta = CadenaConsulta & " left join importnavcentros on importnavconcepcentro.codcentro=importnavcentros.codcentro"
+    CadenaConsulta = CadenaConsulta & " left join importnavconceptos on importnavconceptos.concepto= importnavconcepcentro.codconcepto WHERE 1=1 "
+    
+    CargaGrid "importnavconcepcentro.codcentro >0 "
+    lblIndicador.Caption = ""
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    CheckValueGuardar Me.Name, Me.chkVistaPrevia.Value
+    Set miTag = Nothing
+End Sub
+
+
+
+
+Private Sub frmB_Selecionado(CadenaDevuelta As String)
+    SQL = CadenaDevuelta
+End Sub
+
+Private Sub frmC_DatoSeleccionado(CadenaSeleccion As String)
+    SQL = CadenaSeleccion
+End Sub
+
+Private Sub mnBuscar_Click()
+    BotonBuscar
+End Sub
+
+Private Sub mnEliminar_Click()
+    BotonEliminar
+End Sub
+
+Private Sub mnModificar_Click()
+    BotonModificar
+End Sub
+
+Private Sub mnNuevo_Click()
+    BotonAnyadir
+End Sub
+
+Private Sub mnSalir_Click()
+    Screen.MousePointer = vbHourglass
+    Unload Me
+End Sub
+
+Private Sub mnVerTodos_Click()
+    BotonVerTodos
+End Sub
+
+
+
+
+
+Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
+Select Case Button.Index
+Case 1
+        BotonBuscar
+Case 2
+        BotonVerTodos
+Case 6
+        BotonAnyadir
+Case 7
+        BotonModificar
+Case 8
+        BotonEliminar
+        
+    
+Case 10
+        CadenaDesdeOtroForm = ""
+        frmImportarNavConcep.Show vbModal
+        If CadenaDesdeOtroForm <> "" Then
+            Screen.MousePointer = vbHourglass
+            CadenaDesdeOtroForm = ""
+            CargaConceptos
+            BotonVerTodos
+            Screen.MousePointer = vbDefault
+        End If
+Case 12
+
+        ImportarFactura
+Case 17
+        Unload Me
+Case Else
+
+End Select
+End Sub
+
+
+Private Sub DespalzamientoVisible(bol As Boolean)
+    Dim I
+    For I = 19 To 22
+        Toolbar1.Buttons(I).visible = bol
+    Next I
+End Sub
+
+Private Sub CargaGrid(Optional vSQL As String)
+    Dim J As Integer
+    Dim TotalAncho As Integer
+    Dim I As Integer
+    
+    
+    Adodc1.ConnectionString = Conn
+    If vSQL <> "" Then
+        SQL = CadenaConsulta & " AND " & vSQL
+        Else
+        SQL = CadenaConsulta
+    End If
+    SQL = SQL & " ORDER BY  importnavconcepcentro.codcentro,codconcepto"
+    Adodc1.RecordSource = SQL
+    Adodc1.CursorType = adOpenDynamic
+    Adodc1.LockType = adLockOptimistic
+    Adodc1.Refresh
+    
+    DataGrid1.AllowRowSizing = False
+    DataGrid1.RowHeight = 290
+        
+    
+    'Nombre producto
+    I = 0
+        DataGrid1.Columns(I).Caption = "Centro"
+        DataGrid1.Columns(I).Width = 700
+
+    
+    'Leemos del vector en 2
+    I = 1
+        DataGrid1.Columns(I).Caption = "Nom. centro"
+        DataGrid1.Columns(I).Width = 2100
+        TotalAncho = TotalAncho + DataGrid1.Columns(I).Width
+    
+    'El importe es campo calculado
+    
+    I = 2
+        DataGrid1.Columns(I).Caption = "Conce."
+        DataGrid1.Columns(I).Width = 800
+
+    
+    'Leemos del vector en 2
+    I = 3
+        DataGrid1.Columns(I).Caption = "Descripcion"
+        DataGrid1.Columns(I).Width = 2800
+        TotalAncho = TotalAncho + DataGrid1.Columns(I).Width
+    
+    
+    I = 4
+        DataGrid1.Columns(I).Caption = "Cuenta"
+        DataGrid1.Columns(I).Width = 1150
+
+    
+    'Leemos del vector en 2
+    I = 5
+        DataGrid1.Columns(I).Caption = "Nom. cuenta"
+        DataGrid1.Columns(I).Width = 3450
+        TotalAncho = TotalAncho + DataGrid1.Columns(I).Width
+    
+    For I = 0 To 5
+        DataGrid1.Columns(I).AllowSizing = False
+    Next I
+        
+        'Fiajamos el cadancho
+    If Not CadAncho Then
+        'La primera vez fijamos el ancho y alto de  los txtaux
+        txtAux2(0).Left = DataGrid1.Left + 340
+        txtAux2(0).Width = DataGrid1.Columns(0).Width - 60
+        cmdAux(0).Left = DataGrid1.Columns(1).Left - 15
+        txtAux2(1).Left = cmdAux(0).Left + cmdAux(0).Width
+        txtAux2(1).Width = DataGrid1.Columns(1).Width - cmdAux(0).Width + 30
+        txtAux2(2).Left = DataGrid1.Columns(2).Left + 90
+        txtAux2(2).Width = DataGrid1.Columns(2).Width - 15
+        cmdAux(1).Left = DataGrid1.Columns(3).Left
+        txtAux2(3).Left = DataGrid1.Columns(3).Left + 90
+        txtAux2(3).Width = DataGrid1.Columns(3).Width
+        txtAux2(4).Left = DataGrid1.Columns(4).Left + 120
+        txtAux2(4).Width = DataGrid1.Columns(4).Width - 15
+        cmdAux(2).Left = DataGrid1.Columns(5).Left - 30
+        txtAux2(5).Left = DataGrid1.Columns(5).Left + 60
+        txtAux2(5).Width = DataGrid1.Columns(5).Width - 15
+        CadAncho = True
+    End If
+    'Habilitamos modificar y eliminar
+    If vUsu.Nivel < 2 Then
+        Toolbar1.Buttons(7).Enabled = Not Adodc1.Recordset.EOF
+        Toolbar1.Buttons(8).Enabled = Not Adodc1.Recordset.EOF
+    End If
+   
+End Sub
+
+Private Sub txtaux2_GotFocus(Index As Integer)
+    With txtAux2(Index)
+        .SelStart = 0
+        .SelLength = Len(.Text)
+    End With
+End Sub
+
+Private Sub txtaux2_KeyPress(Index As Integer, KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        KeyAscii = 0
+        SendKeys "{tab}"
+    End If
+End Sub
+
+Private Sub txtAux2_LostFocus(Index As Integer)
+
+    txtAux2(Index).Text = Trim(txtAux2(Index).Text)
+    If Modo = 3 Then Exit Sub 'Busquedas
+    
+    If txtAux2(Index).Text = "" Then
+        txtAux2(Index + 1).Text = ""
+        Exit Sub
+    End If
+    
+    Select Case Index
+    Case 0, 2
+        If Modo >= 2 And Index < 4 Then Exit Sub
+        SQL = ""
+        If Not IsNumeric(txtAux2(Index).Text) Then
+            MsgBox "Campo numérico", vbExclamation
+            
+        Else
+            If Index = 0 Then
+                'importnavcentros CodCentro Descripcion
+                SQL = DevuelveDesdeBD("Descripcion", "importnavcentros", "CodCentro", txtAux2(Index).Text, "N")
+            Else
+                'importnavconceptos concepto  descripcion
+                SQL = DevuelveDesdeBD("Descripcion", "importnavconceptos", "concepto", txtAux2(Index).Text, "N")
+            End If
+        
+            If SQL = "" Then MsgBox "Ningun valore en la BD para el campo : " & txtAux2(Index).Text, vbExclamation
+            
+            
+        End If
+        txtAux2(Index + 1).Text = SQL
+        If SQL = "" Then
+            txtAux2(Index).Text = ""
+            txtAux2(Index).SetFocus
+        End If
+        
+    Case 4
+        TextoBusqueda = txtAux2(Index).Text
+        If CuentaCorrectaUltimoNivel(TextoBusqueda, SQL) Then
+            txtAux2(Index).Text = TextoBusqueda
+            txtAux2(Index + 1).Text = SQL
+
+        Else
+            MsgBox SQL, vbExclamation
+            txtAux2(Index).Text = ""
+            txtAux2(Index + 1).Text = ""
+            txtAux2(Index).SetFocus
+        End If
+    End Select
+End Sub
+
+
+Private Function DatosOk() As Boolean
+Dim B As Boolean
+    B = CompForm(Me)
+    If Not B Then Exit Function
+    
+    If Modo = 1 Then
+        'Estamos insertando
+        
+    End If
+    DatosOk = B
+End Function
+
+Private Sub DeseleccionaGrid()
+    On Error GoTo EDeseleccionaGrid
+        
+    While DataGrid1.SelBookmarks.Count > 0
+        DataGrid1.SelBookmarks.Remove 0
+    Wend
+    Exit Sub
+EDeseleccionaGrid:
+        Err.Clear
+End Sub
+
+
+Private Sub PonerOpcionesMenu()
+    PonerOpcionesMenuGeneral Me
+End Sub
+
+
+
+Private Function SepuedeBorrar() As Boolean
+    SepuedeBorrar = True
+End Function
+
+
+
+
+Private Sub CargaCentros()
+    Set miRsAux = New ADODB.Recordset
+    SQL = "Select * FROM importnavcentros order by  CodCentro  "
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not miRsAux.EOF
+        Set It = ListView1(0).ListItems.Add
+        It.Text = miRsAux.Fields(0)
+        It.SubItems(1) = miRsAux.Fields(1)
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    Set miRsAux = Nothing
+End Sub
+
+
+Private Sub CargaConceptos()
+    Set miRsAux = New ADODB.Recordset
+    ListView1(1).ListItems.Clear
+    SQL = "select * from importnavconceptos order by concepto  "
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not miRsAux.EOF
+        Set It = ListView1(1).ListItems.Add
+        It.Text = miRsAux.Fields(0)
+        It.SubItems(1) = miRsAux.Fields(1)
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    Set miRsAux = Nothing
+End Sub
+
+
+
+Private Sub CargaHistorico()
+    Set miRsAux = New ADODB.Recordset
+    SQL = "select fecha ,centro,Fichero  from importnavhcofich order by fecha desc  "
+    ListView1(2).ListItems.Clear
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not miRsAux.EOF
+        Set It = ListView1(2).ListItems.Add
+        It.Text = miRsAux.Fields(0)
+        It.SubItems(1) = miRsAux.Fields(1)
+        It.SubItems(2) = miRsAux.Fields(2)
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    Set miRsAux = Nothing
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'************************************************************************************************
+'************************************************************************************************
+'************************************************************************************************
+'
+'
+'   proceso de importacion
+'
+'
+'************************************************************************************************
+'************************************************************************************************
+'************************************************************************************************
+
+
+Private Function ImportarFactura_(Fichero As String, ByRef L As Label) As Boolean
+Dim B As Boolean
+    
+    
+
+    
+    Screen.MousePointer = vbHourglass
+    ImportarFactura_ = False
+    
+    
+    L.Caption = "Procesando"
+    L.Refresh
+    
+    B = ProcesarFichero(Fichero)
+    
+    'Si el proceso ha sido correcto, veremos si todos los datos que vienen en el fichero
+    'son corectos. Existen IVAs, existen centros, existen conceptos.....
+    L.Caption = "Comprobar"
+    L.Refresh
+    If B Then B = ComprobarDatosFichero
+
+    
+    
+    'Calculamos las abses por seccion
+    L.Caption = "Calculos"
+    L.Refresh
+    If B Then CalculoDeBases
+    
+    If B Then
+        jj = InStrRev(Fichero, "\")
+        Fichero = Mid(Fichero, jj + 1)
+        
+        SQL = "UPDATE importanatmptotal SET Fichero  = '" & Fichero & "'"
+        Conn.Execute SQL
+    End If
+    
+    
+    ImportarFactura_ = True
+    
+    Screen.MousePointer = vbDefault
+End Function
+
+Private Function ProcesarFichero(Ficher As String) As Boolean
+Dim NF As Integer
+Dim Linea As String
+Dim TrozoComun As String  'TODAS LAS LINEAS LO LLEVAN
+Dim InicioLineas As String
+Dim ColLineas As Collection
+Dim K As Long
+Dim TextoAProcesar As String
+Dim oTRAcADENA As String
+
+Dim Depuracion As Boolean
+Dim NF2 As Integer
+
+    On Error GoTo eProcesarFichero
+    ProcesarFichero = False
+    
+    'Borramos la temporal
+    Conn.Execute "DELETE FROM  importnavtmp"
+    Conn.Execute "DELETE FROM  importanatmptotal"
+        
+    NF = FreeFile
+    
+    Open Ficher For Input As #NF
+    
+    'Primer registro CABECERA
+    Line Input #NF, Linea
+    
+    
+    Depuracion = True
+    If Depuracion Then
+        NF2 = NF + 1
+        Open "c:\navarr.dat" For Output As #NF2
+    End If
+    
+    'Separamos en lineas
+    'En los .dat vienen una unica linea
+    Set ColLineas = New Collection
+    TextoAProcesar = ""
+    
+    If UCase(Right(Ficher, 3)) = "DAT" Then
+        'FICHERO .dat
+        While Linea <> ""
+            If Len(Linea) < 220 Then
+                Err.Raise 513, , "Longitud linea cabecera incorrecta: " & ColLineas.Count
+            Else
+                SQL = Mid(Linea, 1, 220)
+                ColLineas.Add SQL
+                If Depuracion Then Print #NF2, SQL
+                Linea = Mid(Linea, 221)
+            End If
+                
+        Wend
+    
+    Else
+        If UCase(Right(Ficher, 3)) = "RTF" Then
+            'La primera linea NO vale ej: {\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
+            InicioLineas = ""
+            While Not EOF(NF)
+                Line Input #NF, Linea
+               
+                    
+                    
+                    'Buscamos el {
+                    jj = InStrRev(Linea, "}")
+                    If jj > 0 Then Linea = Mid(Linea, jj + 1)
+                    
+                    'La \
+                    Do
+                        jj = InStr(Linea, "\")
+                        If jj > 0 Then
+                            SQL = Mid(Linea, 1, jj - 1)
+                            
+                            K = InStr(jj, Linea, " ")
+                            
+                            If K > 0 Then
+                                Linea = Mid(Linea, K + 1) 'quito el espacio
+                            Else
+                                Linea = ""
+                            End If
+                            Linea = SQL & Linea
+                        End If
+                    Loop Until jj = 0
+                    
+                    TextoAProcesar = TextoAProcesar & Linea
+                    
+     
+            Wend
+             
+             
+            'El incio de linea es el mismoa para todos
+            '382205000524530
+            If Len(TextoAProcesar) < 15 Then
+                MsgBox "Fichero incorrecto(I)", vbExclamation
+            Else
+                InicioLineas = Mid(TextoAProcesar, 1, 15)
+                jj = 0
+                While TextoAProcesar <> ""
+                    jj = jj + 1
+                    If Len(TextoAProcesar) <= 220 Then
+                        Linea = Mid(TextoAProcesar & Space(220), 1, 220)
+                        ColLineas.Add Linea
+                        TextoAProcesar = ""
+                        
+                    Else
+                         K = InStr(3, TextoAProcesar, InicioLineas)
+                         If K = 0 Then
+                            SQL = TextoAProcesar
+                            TextoAProcesar = ""
+                         Else
+                            If K <> 221 Then Stop
+                            SQL = Mid(TextoAProcesar, 1, K - 1)
+                            If Len(SQL) < 220 Then SQL = Left(SQL & Space(220), 220)
+                            TextoAProcesar = Mid(TextoAProcesar, K)
+                         End If
+                         
+                         
+                         If Len(SQL) > 220 Then
+                            MsgBox "Fichero incorrecto(II)", vbExclamation
+                            Stop
+                         Else
+                            
+                            ColLineas.Add SQL
+                        
+                         End If
+                         'Debug.Print SQL
+                        
+                    End If
+                
+                Wend
+                
+            End If 'Len<16
+            
+        End If
+    End If
+    
+    Close #NF
+    If Depuracion Then Close #NF2
+    If ColLineas.Count = 0 Then Exit Function
+    
+    
+    '38220500052453
+    Linea = ColLineas(1)
+    TrozoComun = Mid(Linea, 1, 14)
+    
+    'Para los insertes de las lineas
+    InicioLineas = ", ('" & Mid(Linea, 2, 3) & "','" & Mid(Linea, 5, 10) & "','" & Mid(Linea, 17, 4) & "-" & Mid(Linea, 21, 2) & "-" & Mid(Linea, 23, 2) & "',"
+    
+    'importnavtmp(tienda,numfac,fechafac,secuencial,articulo,area,seccion,subseccion,grupo,subgrupo,
+    ' Longitud      3       10     10                   8      2     2        2         2       2
+    
+    'precioventa,importeventa,precosteud,imporcoste,porceniva,porcenrecequiv, precosteiva1   impcosteiva signo )
+    '    8           10          9           11          4           4           11                 11     1
+    
+    
+    
+    'Lineas
+   
+    TextoBusqueda = ""
+    For jj = 2 To ColLineas.Count
+        
+        'If jj = 93 Then Stop
+        
+        
+        Linea = ColLineas(jj)
+        If Len(Linea) <> 220 Then Err.Raise 513, , "Longitud linea incorrecta. Linea " & jj & " - " & Len(Linea)
+        
+        
+        'Trozo comun
+        If Mid(Linea, 1, 14) <> TrozoComun Then Err.Raise 513, , "Inicio linea erroneo " & Linea & " [" & TrozoComun & "]"
+        
+        
+        'Montamos el INSERT
+        'tienda,numfac,fechafac,secuencial
+        SQL = InicioLineas & jj - 1 & ",'"
+                
+        'articulo,area,seccion,subseccion,grupo,subgrupo
+        SQL = SQL & Mid(Linea, 56, 8) & "','" & Mid(Linea, 64, 2) & "','" & Mid(Linea, 66, 2) & "','"
+        SQL = SQL & Mid(Linea, 68, 2) & "','" & Mid(Linea, 70, 2) & "','" & Mid(Linea, 72, 2) & "','"
+        
+        
+        'cajaformser,udformato  -> de ahi extraeremos las unidades
+        SQL = SQL & Mid(Linea, 74, 9) & "','" & Mid(Linea, 82, 6) & "','"
+        
+        'precioventa,importeventa,precosteud,
+        SQL = SQL & Mid(Linea, 88, 8) & "','" & Mid(Linea, 96, 10) & "','" & Mid(Linea, 106, 9) & "','"
+        
+        
+        'imporcoste,porceniva,porcenrecequiv
+        SQL = SQL & Mid(Linea, 115, 11) & "','" & Mid(Linea, 126, 4) & "','" & Mid(Linea, 130, 4) & "','"
+        
+        'precosteiva1   impcosteiva ,signo
+        SQL = SQL & Mid(Linea, 134, 11) & "','" & Mid(Linea, 145, 11) & "','" & Mid(Linea, 205, 1)
+        
+        
+        
+        SQL = SQL & "','" & oTRAcADENA & "')"
+        
+        TextoBusqueda = TextoBusqueda & SQL
+        
+        If jj = ColLineas.Count Then
+            SQL = ""  'el ultimo
+        Else
+            If Len(TextoBusqueda) > 2000 Then SQL = ""
+        End If
+        If SQL = "" Then
+            TextoBusqueda = Mid(TextoBusqueda, 2) 'quitamos la primera cma
+            SQL = "INSERT INTO importnavtmp(tienda,numfac,fechafac,secuencial,articulo,area,seccion,subseccion,grupo,subgrupo,cajaformser,udformato,"
+            SQL = SQL & "precioventa,importeventa,precosteud,imporcoste,porceniva,porcenrecequiv,precosteiva1,impcosteiva,signo,unidades) VALUES "
+            SQL = SQL & TextoBusqueda
+            
+            Conn.Execute SQL
+            TextoBusqueda = ""
+        End If
+        
+        
+    Next jj
+
+
+    If jj > 0 Then
+        ProcesarFichero = True
+    Else
+        MsgBox "Ningun dato en el fichero", vbExclamation
+    End If
+
+
+
+eProcesarFichero:
+    If Err.Number <> 0 Then MuestraError Err.Number
+    
+End Function
+
+
+
+'Comprobamos los datos
+'Centros, conceptos, cuentas , ivas
+Private Function ComprobarDatosFichero() As Boolean
+Dim Porcen As Currency
+Dim Fin As Boolean
+    
+    On Error GoTo eComprobarDatosFichero
+    ComprobarDatosFichero = False
+    
+    Set miRsAux = New ADODB.Recordset
+    
+    'Centros / Tiendas
+    SQL = "select distinct(tienda) from importnavtmp where  not tienda in (select CodCentro from importnavcentros)"
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = ""
+    While Not miRsAux.EOF
+        SQL = SQL & miRsAux.Fields(0) & vbCrLf
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+
+    If SQL <> "" Then Err.Raise 513, , "Existen centros sin dar de alta en el sistema" & vbCrLf & SQL
+        
+    
+    
+    'Secciones
+    SQL = "select distinct(seccion) from importnavtmp where not seccion in (select concepto from importnavconceptos)"
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = ""
+    While Not miRsAux.EOF
+        SQL = SQL & miRsAux.Fields(0) & vbCrLf
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+
+    If SQL <> "" Then Err.Raise 513, , "Existen secciones sin dar de alta en el sistema" & vbCrLf & SQL
+    
+    
+    'Seccion - centro de coste - codmacta
+    SQL = "select distinct tienda,seccion from importnavtmp where not (tienda,seccion) in (select codcentro,codconcepto from importnavconcepcentro)"
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = ""
+    While Not miRsAux.EOF
+        SQL = SQL & miRsAux.Fields(0) & vbCrLf
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    If SQL <> "" Then Err.Raise 513, , "Existen secciones-tiendas-cuentas sin dar de alta en el sistema" & vbCrLf & SQL
+    
+    
+    
+    
+    'Tipos de iva
+    SQL = "select distinct(porceniva) from importnavtmp order by 1 desc"
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    TextoBusqueda = ""
+    jj = 0
+    While Not miRsAux.EOF
+        TextoBusqueda = TextoBusqueda & miRsAux.Fields(0) & "|"
+        jj = jj + 1
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    
+    If TextoBusqueda = "" Then Err.Raise 513, , "No hay IVAS(1)" & vbCrLf & SQL
+    If jj > 3 Then Err.Raise 513, , "Mas de tres IVAS(2)" & vbCrLf & SQL
+
+    'Veo los IVAS de parametros
+    SQL = "select IVANormal ,IVAReducid ,IVASuperReducido from importnavparam "
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = ""
+    Fin = False
+    For jj = 1 To 3
+        If IsNull(miRsAux.Fields(jj - 1)) Then
+            Fin = True
+        Else
+            SQL = SQL & ", " & miRsAux.Fields(jj - 1)
+        End If
+    Next
+    miRsAux.Close
+    
+    'Ya tengo los IVAS
+    If Fin Then Err.Raise 513, , "Error en parametros IVAS(3)" & vbCrLf & SQL
+    SQL = Mid(SQL, 2)
+    
+    'Cargo los tipos de iVA en el rs
+    SQL = "Select * from tiposiva where codigiva in (" & SQL & ")"
+    miRsAux.Open SQL, Conn, adOpenKeyset, adLockPessimistic, adCmdText
+    
+    
+    
+    While TextoBusqueda <> ""
+        jj = InStr(1, TextoBusqueda, "|")
+        If jj = 0 Then
+            TextoBusqueda = ""
+        Else
+            SQL = Mid(TextoBusqueda, 1, jj - 1)
+            TextoBusqueda = Mid(TextoBusqueda, jj + 1)
+        
+            Porcen = Val(SQL) / 100
+            
+            miRsAux.MoveFirst
+            Fin = False
+            While Not Fin
+                If miRsAux!porceiva = Porcen Then
+                
+                    SQL = " WHERE porceniva = '" & SQL & "'"
+                    SQL = "UPDATE importnavtmp SET tipoiva  =" & miRsAux!codigiva & SQL
+                    Conn.Execute SQL
+                
+                    SQL = ""
+                    Fin = True
+                Else
+                    miRsAux.MoveNext
+                    If miRsAux.EOF Then Fin = True
+                End If
+            Wend
+            If SQL <> "" Then Err.Raise 513, , "No se encuentra iva: " & CStr(Porcen) & vbCrLf & SQL
+            
+        End If
+    Wend
+    miRsAux.Close
+    
+    
+    ComprobarDatosFichero = True
+    
+eComprobarDatosFichero:
+    If Err.Number <> 0 Then MuestraError Err.Number, , Err.Description
+    Set miRsAux = Nothing
+End Function
+
+
+
+Private Sub CalculoDeBases()
+Dim Base As Single
+Dim PorcenFranquicia As Single
+Dim Unidades As Single
+Dim Iva As Single
+Dim Intermedio As Single
+Dim PreCoste As Single
+Dim Margen As Single
+Dim Aux As Single
+Dim BaseImponible As Single
+Dim CosteSinPorcen As Single
+
+    SQL = "select * from importnavtmp "
+    
+    PorcenFranquicia = 0.05
+    
+    Set miRsAux = New ADODB.Recordset
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not miRsAux.EOF
+    
+       
+  
+   ' If miRsAux!seccion = 1 Then Stop
+        
+        'UNIDADES
+        Base = Val(miRsAux!cajaformser) / 1000
+        Intermedio = Val(miRsAux!udformato)
+        Unidades = CCur(Base * Intermedio)
+        If miRsAux!signo = "-" Then Unidades = -Unidades
+            
+            
+        'IVA
+        '-------------------
+        Iva = CCur(miRsAux!porceniva) / 100    'ahora tengo el %,
+        Iva = Iva / 100     'calculo el tanto por uno
+                
+        'Coste con IVA
+        PreCoste = miRsAux!precosteud / 1000
+        PreCoste = PreCoste * Unidades
+        'PreCoste = Round2(PreCoste, 3)
+        
+        'PVP sin IVA
+        Base = miRsAux!precioventa / 100
+       ' Base = Round((Base / (1 + Iva)) * Unidades, 3)
+        Base = (Base / (1 + Iva)) * Unidades
+        BaseImponible = Base
+        
+
+        Intermedio = Base - PreCoste
+        
+        
+        Margen = CSng(Intermedio * PorcenFranquicia)
+        
+      
+        'imponible
+        'Base = Round2(PreCoste + Margen, 3)   'redondeando
+        'Base = Truncar(PreCoste + Margen, 4)   'redondeando
+        Base = PreCoste + Margen     'in tocar
+        
+        Intermedio = Base * Iva
+        Iva = Intermedio
+        
+        
+        
+        
+        SQL = "UPDATE importnavtmp SET basecalculada =" & TransformaComasPuntos(CStr(Base))
+        SQL = SQL & ", ivacalculado=" & TransformaComasPuntos(CStr(Iva))
+        SQL = SQL & ", coste=" & TransformaComasPuntos(CStr(0))  'estaba CosteSinPorcen
+        SQL = SQL & " WHERE secuencial = " & miRsAux!secuencial
+        Conn.Execute SQL
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    
+    
+
+    
+    espera 0.5
+    'Insertamos en tmptotales
+    SQL = "INSERT INTO importanatmptotal(seccion,porceniva,base,iva,Modificad,tipoiva) "
+    
+    
+    'ANTES
+    'SQL = SQL & "select seccion,(porceniva + 0)/100,sum(basecalculada+coste),round(sum(ivacalculado),2),0,tipoiva"
+    'truncate(sum(basecalculada),2),TRUNCATE(sum(ivacalculado),2)
+    SQL = SQL & "select seccion,(porceniva + 0)/100,truncate(sum(basecalculada+coste),2),round(sum(ivacalculado),2),0,tipoiva"
+    
+    
+    SQL = SQL & " from importnavtmp group by 1,2"
+    Conn.Execute SQL
+    
+    
+    
+    Set miRsAux = Nothing
+    
+End Sub
+
+Private Sub ElLbl(ByRef Texto As String)
+    lblIndicador.Caption = Texto
+    lblIndicador.Refresh
+End Sub
+Private Sub ImportarFactura()
+Dim B As Boolean
+Dim Fichero As String
+Dim NumeroReg As Long
+
+    'Seleccionamos el fichero
+    
+    
+    CadenaDesdeOtroForm = ""
+    ElLbl "Leyendo fichero"
+    frmListado2.Opcion = 4
+    frmListado2.Show vbModal
+    ElLbl ""
+    If CadenaDesdeOtroForm = "" Then Exit Sub
+
+
+    If Not BloqueoManual(True, "Consum", "1") Then
+        MsgBox "Proceso bloqueado por otro usuario", vbExclamation
+        Exit Sub
+    End If
+    
+    
+    ElLbl "Abrir fichero"
+    'Fichero = "C:\Users\David\Desktop\FC3822093514311052453000000.rtf"
+    Fichero = CStr(CadenaDesdeOtroForm)
+    B = ImportarFactura_(Fichero, Me.lblIndicador)
+    
+    If B Then
+        CadenaDesdeOtroForm = ""
+        ElLbl "Ajustar importes"
+        frmImportacionNavFra.Show vbModal
+        
+        If CadenaDesdeOtroForm <> "" Then
+            'OK: Generamos la factura
+    
+            Conn.BeginTrans
+            ElLbl "Genera factura"
+            NumeroReg = GenerarLaFactura1
+            If NumeroReg >= 0 Then
+                
+                Conn.CommitTrans
+                
+            Else
+                Conn.RollbackTrans
+            End If
+    
+    
+            If NumeroReg >= 0 Then
+                ElLbl "Finalizar"
+                GenerarApunteyPago NumeroReg
+                
+                'Insertamos en la tablas de hoc de procesados
+                InsertamosEnHcos
+                
+                'OK. METEMOS EL nuevo fichero
+                CargaHistorico
+                
+            End If
+            
+        End If
+    End If
+    
+    ElLbl ""
+    'Cerramos el bloqueo del proceso
+    BloqueoManual False, "Consum", 1
+
+End Sub
+
+Private Function GenerarLaFactura1() As Long
+Dim Mc As Contadores
+Dim Aux As String
+
+    GenerarLaFactura1 = -1
+
+    Set Mc = New Contadores
+    
+    On Error GoTo eGenerarLaFactura
+    FechaFraImportada = CDate(RecuperaValor(CadenaDesdeOtroForm, 1))
+    If Mc.ConseguirContador("1", FechaFraImportada <= vParam.fechafin, True) = 1 Then
+        Set Mc = Nothing
+        Exit Function
+    End If
+
+
+
+
+    'Insertamos la cabecera
+    'cabfactprov(numregis,fecfacpr,anofacpr,fecrecpr,numfacpr,codmacta,confacpr,ba1facpr,ba2facpr,ba3facpr,pi1facpr,pi2facpr,pi3facpr,pr1facpr,pr2facpr,pr3facpr,ti1facpr,ti2facpr,ti3facpr,tr1facpr,tr2facpr,tr3facpr,totfacpr,tp1facpr,tp2facpr,tp3facpr,extranje,fecliqpr
+    Aux = "numfac"
+    SQL = DevuelveDesdeBD("fechafac", "importnavtmp", "1", "1", "N", Aux)
+       
+    SQL = Mc.Contador & ",'" & SQL & "'," & Year(FechaFraImportada) & ",'" & Format(FechaFraImportada, FormatoFecha) & "','" & Aux & "'"
+    
+    'codmacta , confacpr,
+    Aux = DevuelveDesdeBD("Ctaconsum", "importnavparam ", "1", "1")
+    SQL = SQL & ",'" & Aux & "','" & DevNombreSQL(RecuperaValor(CadenaDesdeOtroForm, 2)) & "',"
+    
+    
+    
+    'ba1facpr,  pi1facpr,  pr1facpr, ti1facpr,  tr1facpr, tp1facpr
+    Aux = "select  porceniva '%iva',sum(base) base,sum(iva) IVA,sum(base+iva) Total,tipoiva "
+    Aux = Aux & " from importanatmptotal  group by 1 order by 1 desc"
+    Set miRsAux = New ADODB.Recordset
+    jj = 0
+    ImporteFacturaImportada = 0
+    miRsAux.Open Aux, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not miRsAux.EOF
+        If DBLet(miRsAux.Fields(1), "N") <> 0 Then
+            jj = jj + 1
+            If jj > 3 Then Err.Raise 513, , "Mas de tres tipos de iva"
+            
+            'ba1facpr,  pi1facpr,  pr1facpr, ti1facpr,  tr1facpr, tp1facpr,"
+            Aux = TransformaComasPuntos(CStr(miRsAux.Fields(1))) & "," & TransformaComasPuntos(CStr(miRsAux.Fields(0))) & ",NULL,"
+            Aux = Aux & TransformaComasPuntos(CStr(miRsAux.Fields(2))) & ",NULL," & TransformaComasPuntos(CStr(miRsAux.Fields(4))) & ","
+            SQL = SQL & Aux
+            
+            ImporteFacturaImportada = ImporteFacturaImportada + miRsAux.Fields(3)
+        End If
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    
+    While jj < 3
+        'ba1facpr,  pi1facpr,  pr1facpr, ti1facpr,  tr1facpr, tp1facpr
+        Aux = String(6, "X")
+        Aux = Replace(Aux, "X", "NULL, ")
+        SQL = SQL & Aux
+        
+        jj = jj + 1
+    Wend
+    
+    ' totfacpr, extranje, fecliqpr
+    SQL = SQL & TransformaComasPuntos(CStr(ImporteFacturaImportada)) & ",0,'" & Format(FechaFraImportada, FormatoFecha) & "'"
+    
+    
+    'Insertamos en cabfatprov
+    Aux = "INSERT INTO cabfactprov(numregis, fecfacpr, anofacpr, fecrecpr, numfacpr, codmacta, confacpr,"
+    'ba1facpr,ba2facpr,ba3facpr,pi1facpr,pi2facpr,pi3facpr,pr1facpr,pr2facpr,pr3facpr,ti1facpr,ti2facpr,ti3facpr,tr1facpr,tr2facpr,tr3facpr,tp1facpr,tp2facpr,tp3facpr,
+    
+    Aux = Aux & "ba1facpr,  pi1facpr,  pr1facpr, ti1facpr,  tr1facpr, tp1facpr,"
+    Aux = Aux & "ba2facpr,  pi2facpr,  pr2facpr, ti2facpr,  tr2facpr, tp2facpr,"
+    Aux = Aux & "ba3facpr,  pi3facpr,  pr3facpr, ti3facpr,  tr3facpr, tp3facpr,"
+    
+    
+    Aux = Aux & " totfacpr, extranje , fecliqpr) VALUES (" & SQL & ")"
+    
+    Conn.Execute Aux
+    
+    
+    'Las bases
+    Aux = "select seccion,codmacta,base from importanatmptotal left join importnavconcepcentro  "
+    Aux = Aux & " on seccion=codconcepto And codcentro = " & RecuperaValor(CadenaDesdeOtroForm, 3)
+    Aux = Aux & " group by seccion ORDER BY seccion"
+    miRsAux.Open Aux, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = ""
+    jj = 1
+    While Not miRsAux.EOF
+        'linfactprov;;;;  numregis  anofacpr  numlinea  codtbase  impbaspr  codccost
+        Aux = ", (" & Mc.Contador & "," & Year(FechaFraImportada) & "," & jj & ",'" & miRsAux!codmacta
+        Aux = Aux & "'," & TransformaComasPuntos(CStr(miRsAux.Fields(2))) & ",NULL)"
+        
+        SQL = SQL & Aux
+        
+        miRsAux.MoveNext
+        jj = jj + 1
+    Wend
+    miRsAux.Close
+    
+    SQL = Mid(SQL, 2)
+    SQL = "INSERT INTO linfactprov(numregis,anofacpr ,numlinea ,codtbase ,impbaspr ,codccost) VALUES " & SQL
+    Conn.Execute SQL
+    
+    
+    'Log de inserciones
+    vLog.Insertar 7, vUsu, "Importar consum: " & Mc.Contador & " - "
+    
+    GenerarLaFactura1 = Mc.Contador
+    
+eGenerarLaFactura:
+    If Err.Number <> 0 Then MuestraError Err.Number, Err.Description
+    Set miRsAux = Nothing
+    Set Mc = Nothing
+End Function
+
+
+Private Sub GenerarApunteyPago(NumeroDeRegistro As Long)
+
+    espera 0.5
+    If vParam.ContabilizaFactura Then
+                   
+
+        With frmActualizar
+            .OpcionActualizar = 8
+            'NumAsiento     --> CODIGO FACTURA
+            'NumDiari       --> AÑO FACTURA
+            'NUmSerie       --> SERIE DE LA FACTURA
+            'FechaAsiento   --> Fecha factura
+            .NumFac = NumeroDeRegistro
+            .NumDiari = Year(FechaFraImportada)
+            .NUmSerie = FechaFraImportada
+            .FechaAsiento = FechaFraImportada
+            .DiarioFacturas = vParam.numdiapr
+            .NumAsiento = 0
+            .Show vbModal
+    
+        End With
+    End If
+    
+    If vEmpresa.TieneTesoreria Then
+        '|0500052453||07/11/2014|40000010|CONSUM puesto por David|
+        
+        CadenaDesdeOtroForm = DevuelveDesdeBD("Ctaconsum", "importnavparam ", "1", "1")
+        SQL = DevuelveDesdeBD("nommacta", "cuentas", "codmacta", CadenaDesdeOtroForm, "T")
+        CadenaDesdeOtroForm = "|" & CadenaDesdeOtroForm & "|" & SQL & "|"
+        
+        SQL = "concat(numfac,'||',DATE_FORMAT(fechafac,'%d/%m/%Y'))"
+        SQL = DevuelveDesdeBD(SQL, "importnavtmp", "1", "1")
+        SQL = "|" & SQL & CadenaDesdeOtroForm
+        
+        frmVto.Opcion = 1
+        frmVto.Importe = ImporteFacturaImportada
+        frmVto.Datos = SQL
+        frmVto.Show vbModal
+
+    End If
+End Sub
+
+
+
+Private Sub InsertamosEnHcos()
+    SQL = DevuelveDesdeBD("max(id)", "importnavhcofich", "1", "1")
+    If SQL = "" Then SQL = "0"
+    jj = Val(SQL) + 1
+    
+    
+    SQL = DevuelveDesdeBD("Fichero", "importanatmptotal", "1", "1", "N")
+    TextoBusqueda = DevuelveDesdeBD("tienda", "importnavtmp", "1", "1", "N")
+    'importnavhcofich id fecha fichero centro
+    SQL = jj & ",now(),'" & SQL & "'," & TextoBusqueda & ")"
+    SQL = "INSERT INTO importnavhcofich(id ,fecha ,fichero ,centro) VALUES (" & SQL
+    Conn.Execute SQL
+    
+    SQL = "seccion,porceniva,base,iva,Modificad,Fichero,tipoiva"
+    SQL = "INSERT INTO importnavtotalhco(id," & SQL & ") SELECT " & jj & "," & SQL & " FROM importanatmptotal"
+    Conn.Execute SQL
+     
+
+End Sub
+
+
+
+
+Public Function Round2(Number As Variant, Optional NumDigitsAfterDecimals As Long) As Variant
+Dim ent As Integer
+Dim Cad As String
+  
+  ' Comprobaciones
+  If Not IsNumeric(Number) Then
+    Err.Raise 13, "Round2", "Error de tipo. Ha de ser un número."
+    Exit Function
+  End If
+  If NumDigitsAfterDecimals < 0 Then
+    Err.Raise 0, "Round2", "NumDigitsAfterDecimals no puede ser negativo."
+    Exit Function
+  End If
+  
+  ' Redondeo.
+  Cad = "0"
+  If NumDigitsAfterDecimals <> 0 Then Cad = Cad & "." & String(NumDigitsAfterDecimals, "0")
+  Round2 = Format(Number, Cad)
+  
+End Function
+
+
+Private Function Truncar(Numero As Single, Decimales) As Single
+Dim Cadena As String
+
+    Cadena = Format(Numero, "#0.00000")
+    Cadena = Mid(Cadena, 1, Len(Cadena) - (5 - Decimales))
+    Truncar = CSng(Cadena)
+End Function

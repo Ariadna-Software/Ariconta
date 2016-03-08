@@ -1,0 +1,9 @@
+3151 lineas pasadas con exito.
+
+-----------------------------
+Valores nulos 
+43003892|MARIA SOLEDAD GARCIA CIFRE|CL MONTESA, 52-4|46950|XIRIVELLA|VALENCIA| |||||1||||
+-----------------------------
+Valores nulos 
+64000001||||||NONIF|||||0||||
+
