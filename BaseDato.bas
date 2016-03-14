@@ -2065,6 +2065,8 @@ Dim ImporIVA As Currency
         If LetrasTipoDeIVA = "ISP" Then ImporIVA = 0    'Inversion sujeto pasivo. NO lleva IVA
         If LetrasTipoDeIVA = "COM" Then ImporIVA = 0    'Comunitarias
         
+        
+        
         vCta = TransformaComasPuntos(CStr(ImporAux)) & ",'" & Format(RT!pi1facpr, "0.00") & "'," & TransformaComasPuntos(CStr(ImporIVA)) & "," & TransformaComasPuntos(CStr(RT!totfacpr))
         SQL = d & CodFacTemporal & Aux & vCta & ","
         
@@ -2313,18 +2315,18 @@ Dim ImporIVA As Currency
             If M3 = 2 Then
                 'Estamos buscando ISP o COM
                 If BuscaComunitarias Then     '3:=sujeto pasivo   1:=Intracomunitarias
-                    H = ",0"
-                    d = "3"
-                Else
                     H = ",2"
                     d = "1"
+                Else
+                    H = ",0"
+                    d = "3"
                 End If
                 d = " AND extranje =  " & d
             Else
                 'Si llega al tercero entonces es INtrcoms ya que
-                'BuscaComunitarias
-                H = ",2"
-                d = " AND extranje = 1 "   '3:=sujeto pasivo   1:=Intracomunitarias
+                'BuscaComunitarias ya las ha buscado
+                H = ",0"
+                d = " AND extranje = 3 "   '3:=sujeto pasivo   1:=Intracomunitarias
             End If
         End If
         
@@ -5941,7 +5943,7 @@ Private Sub MontaDatosEmpresa()
         H = ",'','','','','',''"  '6 campos
     Else
         H = ",'" & DBLet(RT!nifempre) & "','" & vEmpresa.nomempre & "','"
-        d = DBLet(RT!siglasvia) & " " & DBLet(RT!Direccion) & "  " & DBLet(RT!numero) & ", " & DBLet(RT!puerta)
+        d = DBLet(RT!siglasvia) & " " & DBLet(RT!Direccion) & "  " & DBLet(RT!Numero) & ", " & DBLet(RT!puerta)
         H = H & d & "','" & DBLet(RT!codpos) & "','" & DBLet(RT!poblacion) & "','" & DBLet(RT!provincia) & "'"
     End If
     RT.Close

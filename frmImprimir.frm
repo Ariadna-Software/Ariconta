@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "Comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmImprimir 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Impresión listados"
@@ -364,10 +364,10 @@ cmdImprimir.Enabled = True
 If SoloImprimir Then
     chkSoloImprimir.Value = 0
     Me.Frame2.Enabled = False
-    chkSoloImprimir.Visible = False
+    chkSoloImprimir.visible = False
 Else
     Frame2.Enabled = True
-    chkSoloImprimir.Visible = True
+    chkSoloImprimir.visible = True
 End If
 PonerNombreImpresora
 MostrarTree = False
@@ -959,7 +959,7 @@ Private Sub Text1_DblClick()
 Frame2.Tag = Val(Frame2.Tag) + 1
 If Val(Frame2.Tag) > 2 Then
     Frame2.Enabled = True
-    chkSoloImprimir.Visible = True
+    chkSoloImprimir.visible = True
 End If
 End Sub
 
