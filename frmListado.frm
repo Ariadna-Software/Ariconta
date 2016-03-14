@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmListado 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Informes"
@@ -15219,9 +15219,9 @@ Dim W As Single
         frameListadoCuentas.Enabled = Opcion = 1
     Case 2
         'Listado de cuentas
-        Me.frameCuentas.visible = True
-        W = Me.frameCuentas.Width
-        H = Me.frameCuentas.Height
+        Me.FrameCuentas.visible = True
+        W = Me.FrameCuentas.Width
+        H = Me.FrameCuentas.Height
         PonerNiveles
     Case 3
         'Listado de asientos
@@ -15625,7 +15625,7 @@ Dim W As Single
         frameBorrarClientes.visible = True
         W = frameBorrarClientes.Width
         H = frameBorrarClientes.Height
-        frameTapa.visible = Opcion = 23
+        FrameTapa.visible = Opcion = 23
         Me.FrBorrePorEjercicios.visible = True
         Label2(16).Caption = "Borre registro "
         If Opcion = 22 Then
@@ -18162,14 +18162,14 @@ End Function
 
 
 'Certificado de IVA
-Private Sub ProcesaRegstrosParaBD(CONTA As String, TipoIVA As Integer)
+Private Sub ProcesaRegstrosParaBD(CONTA As String, TipoIva As Integer)
 Dim Aux As String
 
     pb5.Value = 2
     SQL = "Select *,nommacta,nifdatos,pais FROM " & CONTA & ".cabfact as cabf," & CONTA & ".cuentas as cta"
     SQL = SQL & " WHERE cabf.codmacta = cta.codmacta AND "
     'Los tipos de iva
-    SQL = SQL & "( tp1faccl= " & TipoIVA & " OR tp2faccl= " & TipoIVA & " OR tp2faccl= " & TipoIVA & ")"
+    SQL = SQL & "( tp1faccl= " & TipoIva & " OR tp2faccl= " & TipoIva & " OR tp2faccl= " & TipoIva & ")"
     
     'Las fechas
     If Text3(13).Text <> "" Then SQL = SQL & " AND fecfaccl >=' " & Format(Text3(13).Text, FormatoFecha) & "'"
@@ -18206,7 +18206,7 @@ Dim Aux As String
             Aux = Aux & DBLet(RS!Pais) & "','" & DBLet(RS!nifdatos) & "',"
                         
             'Tipo de IVA 1
-            If RS!tp1faccl = TipoIVA Then
+            If RS!tp1faccl = TipoIva Then
                 RC = TransformaComasPuntos(CStr(RS!ba1faccl))
                 RC = RC & "," & RS!tp1faccl & ","
                 RC = RC & TransformaComasPuntos(CStr(RS!pi1faccl)) & ")"
@@ -18218,7 +18218,7 @@ Dim Aux As String
             
             'Tipo de iva 2
             If Not IsNull(RS!tp2faccl) Then
-                If RS!tp2faccl = TipoIVA Then
+                If RS!tp2faccl = TipoIva Then
                     RC = TransformaComasPuntos(CStr(RS!ba2faccl))
                     RC = RC & "," & RS!tp2faccl & ","
                     RC = RC & TransformaComasPuntos(CStr(RS!pi2faccl)) & ")"
@@ -18231,7 +18231,7 @@ Dim Aux As String
             
             'Tipo de iva 3
             If Not IsNull(RS!tp3faccl) Then
-                If RS!tp3faccl = TipoIVA Then
+                If RS!tp3faccl = TipoIva Then
                     RC = TransformaComasPuntos(CStr(RS!ba3faccl))
                     RC = RC & "," & RS!tp3faccl & ","
                     RC = RC & TransformaComasPuntos(CStr(RS!pi3faccl)) & ")"
@@ -18455,7 +18455,7 @@ Dim F As Date
         Cad = DBLet(RS!siglasvia, "T")
         If Cad <> "" Then Cad = Cad & "  "
         Cad = Cad & Trim(DBLet(RS!Direccion)) & " "
-        SQL = Trim(DBLet(RS!numero, "T") & " " & DBLet(RS!escalera, "T") & " " & DBLet(RS!piso, "T") & " " & DBLet(RS!puerta, "T"))
+        SQL = Trim(DBLet(RS!Numero, "T") & " " & DBLet(RS!escalera, "T") & " " & DBLet(RS!piso, "T") & " " & DBLet(RS!puerta, "T"))
         Cad = Cad & SQL
         
         SQL = "Apoderado= """ & DBLet(RS!apoderado) & """|"
