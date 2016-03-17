@@ -850,7 +850,7 @@ Dim YaMostrado As Boolean
 Dim RI As ADODB.Recordset
 Dim importe2 As Currency
 Dim Aux As String
-Dim Pais As String
+Dim PAIS As String
 
     On Error GoTo EGen347
     PrimerosPasos = False
@@ -940,7 +940,7 @@ Dim Pais As String
         Linea = Linea & IdentificacionPresentador
         
         
-        If RS!Pais = "ESPAÑA" Then
+        If RS!PAIS = "ESPAÑA" Then
             Linea = Linea & DatosTexto(RS!NIF, 9)
         Else
             Linea = Linea & DatosTexto(" ", 9)
@@ -954,17 +954,17 @@ Dim Pais As String
         
         Linea = Linea & "D"
         
-        If RS!Pais = "ESPAÑA" Then
+        If RS!PAIS = "ESPAÑA" Then
             Aux = "00" & Trim(Mid(RS!codposta, 1, 2))
         Else
             Aux = "99"
         End If
         Linea = Linea & Right(Aux, 2)
         
-        If RS!Pais = "ESPAÑA" Then
+        If RS!PAIS = "ESPAÑA" Then
             Aux = "  "
         Else
-            Aux = Mid(RS!Pais & "  ", 1, 2)
+            Aux = Mid(RS!PAIS & "  ", 1, 2)
         End If
         Linea = Linea & Aux   'PAIS
         Linea = Linea & " "   'BLANCO psocion 81
@@ -1054,11 +1054,11 @@ Dim Pais As String
             Cad = Cad & " " & DatosTexto3(0, 15)   'trim 4 inmueble
             
             '17 del NIF operador intracomunitario
-            If RS!Pais = "ESPAÑA" Then
+            If RS!PAIS = "ESPAÑA" Then
                 Aux = Space(17)
             Else
                 Debug.Print Len(RS!NIF)
-                Aux = Mid(RS!Pais & "  ", 1, 2) & RS!NIF & Space(17)
+                Aux = Mid(RS!PAIS & "  ", 1, 2) & RS!NIF & Space(17)
                 Aux = Mid(Aux, 1, 17)
             End If
             
@@ -1752,8 +1752,8 @@ End Function
 
 
 
-Private Sub CargaFacturasEmitidas(NumeroEmpresa As Byte, CadWhere As String, SerieTicket As String, vTicketsEn340LetraSerie As Boolean)
-Dim Pais As String
+Private Sub CargaFacturasEmitidas(NumeroEmpresa As Byte, cadWHERE As String, SerieTicket As String, vTicketsEn340LetraSerie As Boolean)
+Dim PAIS As String
 Dim CadenaInsert As String
 Dim Identificacion As Byte
 Dim TotalLin As Currency
@@ -1768,7 +1768,7 @@ Dim ErroresCtaAjena As String  'Cuando en lugar de codfaccl va a co
     '1: De momento van juntos intracom y extranjero. Ya veremos com separamos
 
     Linea = "select cabfact.*,razosoci,nifdatos,pais,nommacta from conta" & NumeroEmpresa & ".cabfact as cabfact,"
-    Linea = Linea & "conta" & NumeroEmpresa & ".cuentas cuentas where cabfact.codmacta=cuentas.codmacta AND " & CadWhere
+    Linea = Linea & "conta" & NumeroEmpresa & ".cuentas cuentas where cabfact.codmacta=cuentas.codmacta AND " & cadWHERE
     'Voy a ordenar por numserie para no leer tantas veces de contadores
     Linea = Linea & " ORDER BY numserie"
     CadenaInsert = ""
@@ -1799,15 +1799,15 @@ Dim ErroresCtaAjena As String  'Cuando en lugar de codfaccl va a co
             End If
                 
             '`codpais`,`idenpais`,`nifresidencia`
-            Pais = UCase(DBLet(RS!Pais, "T"))
-            If Pais = "" Then Pais = "ESPAÑA"
+            PAIS = UCase(DBLet(RS!PAIS, "T"))
+            If PAIS = "" Then PAIS = "ESPAÑA"
             
-            If Pais = "ESPAÑA" Then
+            If PAIS = "ESPAÑA" Then
                 Linea = Linea & "'ES','1',NULL"
                 Identificacion = 0
             Else
                 'ESTRANJERO o INTRACOM
-                Linea = Linea & "'" & Mid(Pais, 1, 2) & "','2','"
+                Linea = Linea & "'" & Mid(PAIS, 1, 2) & "','2','"
                 Linea = Linea & DBLet(RS!nifdatos, "T") & "'"
                 Identificacion = 1
             End If
@@ -1817,44 +1817,44 @@ Dim ErroresCtaAjena As String  'Cuando en lugar de codfaccl va a co
             If Not IsNull(RS!tp2faccl) Then NF = NF + 1
             If Not IsNull(RS!tp3faccl) Then NF = NF + 1
             If EsTicket Then
-                Pais = "J"
+                PAIS = "J"
             Else
                 If NF = 1 Then
                     'SOLO HAY UNA base
-                    Pais = " "
+                    PAIS = " "
                 Else
-                    Pais = "C" 'mas de una base
+                    PAIS = "C" 'mas de una base
                 End If
                 
             End If
-            Linea = Linea & ",'E','" & Pais & "',"
+            Linea = Linea & ",'E','" & PAIS & "',"
             
             
             '`fechaexp`,`fechaop`,
-            Pais = "'" & Format(RS!fecfaccl, FormatoFecha) & "'"
-            Linea = Linea & Pais & "," & Pais   'fechaexp y fechaop
+            PAIS = "'" & Format(RS!fecfaccl, FormatoFecha) & "'"
+            Linea = Linea & PAIS & "," & PAIS   'fechaexp y fechaop
            
            
             If RS!NUmSerie <> SerieAnt Then
                  SerieAnt = RS!NUmSerie
-                 Pais = DevuelveDesdeBD("facliajena", "conta" & NumeroEmpresa & ".contadores", "tiporegi", SerieAnt, "T")
-                 EsPorCtaAjena = Pais = "1"
+                 PAIS = DevuelveDesdeBD("facliajena", "conta" & NumeroEmpresa & ".contadores", "tiporegi", SerieAnt, "T")
+                 EsPorCtaAjena = PAIS = "1"
             End If
                 
             If EsPorCtaAjena Then
                 'COJE LO QUE HAYA EN confaccl
-                Pais = DBLet(RS!confaccl, "T")
-                If Pais = "" Then
-                    Pais = RS!NUmSerie & Format(RS!codfaccl, "00000000")
-                    ErroresCtaAjena = ErroresCtaAjena & "   - " & Pais & vbCrLf
+                PAIS = DBLet(RS!confaccl, "T")
+                If PAIS = "" Then
+                    PAIS = RS!NUmSerie & Format(RS!codfaccl, "00000000")
+                    ErroresCtaAjena = ErroresCtaAjena & "   - " & PAIS & vbCrLf
                 End If
                     
             Else
                 'LO NORMAL, es decir codfaccl
-                Pais = RS!NUmSerie & Format(RS!codfaccl, "00000000")
+                PAIS = RS!NUmSerie & Format(RS!codfaccl, "00000000")
                 
             End If
-            Linea = Linea & ",'" & Pais & "',"
+            Linea = Linea & ",'" & PAIS & "',"
            
             'rectifica,dom_intracom,pob_intracom,cp_intracom,"
             If RS!totfaccl < 0 Then
@@ -1870,23 +1870,23 @@ Dim ErroresCtaAjena As String  'Cuando en lugar de codfaccl va a co
            
            'Base UNO. SIEMPRE EXISTE
            TotalLin = RS!ti1faccl + RS!ba1faccl + DBLet(RS!tr1faccl, "N")
-           Pais = "NULL," & NF & "," & TransformaComasPuntos(CStr(RS!pi1faccl)) & "," & TransformaComasPuntos(CStr(RS!ba1faccl)) _
+           PAIS = "NULL," & NF & "," & TransformaComasPuntos(CStr(RS!pi1faccl)) & "," & TransformaComasPuntos(CStr(RS!ba1faccl)) _
                 & "," & TransformaComasPuntos(CStr(RS!ti1faccl)) & "," & TransformaComasPuntos(CStr(TotalLin))
-           Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr1faccl, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr1faccl, "N"))) & ")"
+           PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr1faccl, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr1faccl, "N"))) & ")"
             
            'Insertar
-           CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+           CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
            NumRegElim = NumRegElim + 1
            
            'Base DOS si no es null
            If Not IsNull(RS!ba2faccl) Then
                 TotalLin = RS!ti2faccl + RS!ba2faccl + DBLet(RS!tr2faccl, "N")
-                Pais = "NULL," & NF & "," & TransformaComasPuntos(CStr(RS!pi2faccl)) & "," & TransformaComasPuntos(CStr(RS!ba2faccl)) _
+                PAIS = "NULL," & NF & "," & TransformaComasPuntos(CStr(RS!pi2faccl)) & "," & TransformaComasPuntos(CStr(RS!ba2faccl)) _
                 & "," & TransformaComasPuntos(CStr(RS!ti2faccl)) & "," & TransformaComasPuntos(CStr(TotalLin))
-                Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr2faccl, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr2faccl, "N"))) & ")"
+                PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr2faccl, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr2faccl, "N"))) & ")"
                 
                 'Insertar
-                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
                 NumRegElim = NumRegElim + 1
            End If
            
@@ -1894,12 +1894,12 @@ Dim ErroresCtaAjena As String  'Cuando en lugar de codfaccl va a co
            'Base TRES si no es null
            If Not IsNull(RS!ba3faccl) Then
                 TotalLin = RS!ti3faccl + RS!ba3faccl + DBLet(RS!tr3faccl, "N")
-                Pais = "NULL," & NF & "," & TransformaComasPuntos(CStr(RS!pi3faccl)) & "," & TransformaComasPuntos(CStr(RS!ba3faccl)) _
+                PAIS = "NULL," & NF & "," & TransformaComasPuntos(CStr(RS!pi3faccl)) & "," & TransformaComasPuntos(CStr(RS!ba3faccl)) _
                 & "," & TransformaComasPuntos(CStr(RS!ti3faccl)) & "," & TransformaComasPuntos(CStr(TotalLin))
-                Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr3faccl, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr3faccl, "N"))) & ")"
+                PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr3faccl, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr3faccl, "N"))) & ")"
                 
                 'Insertar
-                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
                 NumRegElim = NumRegElim + 1
            End If
            
@@ -1907,9 +1907,9 @@ Dim ErroresCtaAjena As String  'Cuando en lugar de codfaccl va a co
            'HACEMOS EL INSERT
            
            If Len(CadenaInsert) > 100000 Then
-                Pais = DevuelveInsertTmp340(0)
-                Pais = Pais & Mid(CadenaInsert, 2)
-                Conn.Execute Pais
+                PAIS = DevuelveInsertTmp340(0)
+                PAIS = PAIS & Mid(CadenaInsert, 2)
+                Conn.Execute PAIS
                 CadenaInsert = ""
            End If
            
@@ -1922,9 +1922,9 @@ Dim ErroresCtaAjena As String  'Cuando en lugar de codfaccl va a co
             MsgBox ErroresCtaAjena, vbExclamation
         End If
         If CadenaInsert <> "" Then
-            Pais = DevuelveInsertTmp340(0)
-            Pais = Pais & Mid(CadenaInsert, 2)
-            Conn.Execute Pais
+            PAIS = DevuelveInsertTmp340(0)
+            PAIS = PAIS & Mid(CadenaInsert, 2)
+            Conn.Execute PAIS
         End If
 End Sub
 
@@ -1933,12 +1933,12 @@ End Sub
 'BIEN DE INVERSION EN EL UTL PERIODO UNICAMENTE. NUNCA las cargare desde aqui
 Private Sub CargaFacturasRecibidas2(NumeroEmpresa As Byte, CadenaWhere As String, QuitarREA As Boolean, MismaFechaFra As Boolean)
 'FraPro_MismaFecha
-Dim Pais As String
+Dim PAIS As String
 Dim CadenaInsert As String
 Dim IvaBienesInversion As String
 Dim IvaREA As String
 Dim IVA_BI As Boolean
-Dim Identificacion As Byte
+Dim Identificacion_ As Byte
 Dim TotalLin As Currency
 Dim B As Boolean
 
@@ -2010,16 +2010,16 @@ Dim B As Boolean
             
                 
             '`codpais`,`idenpais`,`nifresidencia`
-            Pais = UCase(DBLet(RS!Pais, "T"))
-            If Pais = "" Then Pais = "ESPAÑA"
+            PAIS = UCase(DBLet(RS!PAIS, "T"))
+            If PAIS = "" Then PAIS = "ESPAÑA"
             
-            If Pais = "ESPAÑA" Then
+            If PAIS = "ESPAÑA" Then
                 Linea = Linea & "'ES','1',NULL"
-                Identificacion = 0
+                Identificacion_ = 0
             Else
                 'ESTRANJERO o INTRACOM
-                Linea = Linea & "'" & Mid(Pais, 1, 2) & "',2,'" & DBLet(RS!nifdatos, "T") & "'"
-                Identificacion = 1
+                Linea = Linea & "'" & Mid(PAIS, 1, 2) & "',2,'" & DBLet(RS!nifdatos, "T") & "'"
+                Identificacion_ = 1
             End If
             Linea = Linea & ",'"
             '`clavelibro`,`claveoperacion`,
@@ -2028,9 +2028,9 @@ Dim B As Boolean
             If Not IsNull(RS!tp3facpr) Then NF = NF + 1
             If NF = 1 Then
                 'SOLO HAY UNA base
-                Pais = " "
+                PAIS = " "
             Else
-                Pais = "C" 'mas de una base
+                PAIS = "C" 'mas de una base
             End If
             'IMPORTANTE.
             'Hemos cargado en IvaBienesInversion el codigo de IVA que este marcado como Bien de inversion.
@@ -2047,7 +2047,7 @@ Dim B As Boolean
                 End If
             End If
             
-            Linea = Linea & "','" & Pais & "',"
+            Linea = Linea & "','" & PAIS & "',"
             '`fechaexp`,`fechaop`,
             If MismaFechaFra Then
             'Graba en los dos campos la misma fecha m es decir, la de RECEPCION
@@ -2074,7 +2074,7 @@ Dim B As Boolean
                 Linea = Linea & "NULL"
            End If
            
-           'If Identificacion = 1 Then
+       
            Linea = Linea & ",NULL,NULL,NULL,"
            
            
@@ -2089,11 +2089,19 @@ Dim B As Boolean
                 
                 
            Else
+                    'AQUI AQUI.  Ahora en las intracom, el importe del IVA viene impuesto
+                
                     'Base UNO. SIEMPRE EXISTE
-                    TotalLin = RS!ti1facpr + RS!ba1facpr + DBLet(RS!tr1facpr, "N")
-                    Pais = NF & "," & TransformaComasPuntos(CStr(RS!pi1facpr)) & "," & TransformaComasPuntos(CStr(RS!ba1facpr)) _
+                    If Identificacion_ = 1 Then
+                        
+                        TotalLin = RS!ba1facpr
+                    Else
+                        TotalLin = RS!ti1facpr + RS!ba1facpr + DBLet(RS!tr1facpr, "N")
+                    End If
+                    
+                    PAIS = NF & "," & TransformaComasPuntos(CStr(RS!pi1facpr)) & "," & TransformaComasPuntos(CStr(RS!ba1facpr)) _
                          & "," & TransformaComasPuntos(CStr(RS!ti1facpr)) & "," & TransformaComasPuntos(CStr(TotalLin))
-                    Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr1facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr1facpr, "N"))) & ")"
+                    PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr1facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr1facpr, "N"))) & ")"
                      
                     'Insertar
                     B = True
@@ -2103,7 +2111,7 @@ Dim B As Boolean
                     End If
                     
                     If B Then
-                         CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+                         CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
                          NumRegElim = NumRegElim + 1
                      End If
                      
@@ -2111,12 +2119,12 @@ Dim B As Boolean
                     'Base DOS si no es null
                     If Not IsNull(RS!ba2facpr) Then
                          TotalLin = RS!ti2facpr + RS!ba2facpr + DBLet(RS!tr2facpr, "N")
-                         Pais = NF & "," & TransformaComasPuntos(CStr(RS!pi2facpr)) & "," & TransformaComasPuntos(CStr(RS!ba2facpr)) _
+                         PAIS = NF & "," & TransformaComasPuntos(CStr(RS!pi2facpr)) & "," & TransformaComasPuntos(CStr(RS!ba2facpr)) _
                          & "," & TransformaComasPuntos(CStr(RS!ti2facpr)) & "," & TransformaComasPuntos(CStr(TotalLin))
-                         Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr2facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr2facpr, "N"))) & ")"
+                         PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr2facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr2facpr, "N"))) & ")"
                          
                          'Insertar
-                         CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+                         CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
                          NumRegElim = NumRegElim + 1
                     End If
                     
@@ -2124,12 +2132,12 @@ Dim B As Boolean
                     'Base TRES si no es null
                     If Not IsNull(RS!ba3facpr) Then
                          TotalLin = RS!ti3facpr + RS!ba3facpr + DBLet(RS!tr3facpr, "N")
-                         Pais = NF & "," & TransformaComasPuntos(CStr(RS!pi3facpr)) & "," & TransformaComasPuntos(CStr(RS!ba3facpr)) _
+                         PAIS = NF & "," & TransformaComasPuntos(CStr(RS!pi3facpr)) & "," & TransformaComasPuntos(CStr(RS!ba3facpr)) _
                          & "," & TransformaComasPuntos(CStr(RS!ti3facpr)) & "," & TransformaComasPuntos(CStr(TotalLin))
-                         Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr3facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr3facpr, "N"))) & ")"
+                         PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr3facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr3facpr, "N"))) & ")"
                          
                          'Insertar
-                         CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+                         CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
                          NumRegElim = NumRegElim + 1
                     End If
                     
@@ -2140,9 +2148,9 @@ Dim B As Boolean
             
             'HACEMOS EL INSERT
             If Len(CadenaInsert) > 100000 Then
-                 Pais = DevuelveInsertTmp340(0)
-                 Pais = Pais & Mid(CadenaInsert, 2)
-                 Conn.Execute Pais
+                 PAIS = DevuelveInsertTmp340(0)
+                 PAIS = PAIS & Mid(CadenaInsert, 2)
+                 Conn.Execute PAIS
                  CadenaInsert = ""
             End If
             
@@ -2152,9 +2160,9 @@ Dim B As Boolean
         RS.Close
            
         If CadenaInsert <> "" Then
-            Pais = DevuelveInsertTmp340(0)
-            Pais = Pais & Mid(CadenaInsert, 2)
-            Conn.Execute Pais
+            PAIS = DevuelveInsertTmp340(0)
+            PAIS = PAIS & Mid(CadenaInsert, 2)
+            Conn.Execute PAIS
         End If
 End Sub
 
@@ -2165,7 +2173,7 @@ End Sub
 '
 Private Sub CargaFacturasRecibidasBienInversion(NumeroEmpresa As Byte, Anyo As Integer, MismaFechaFra As Boolean)
 'FraPro_MismaFecha
-Dim Pais As String
+Dim PAIS As String
 Dim CadenaInsert As String
 Dim IvaBienesInversion2 As String   'Para añadir al where
 Dim Identificacion As Byte
@@ -2222,15 +2230,15 @@ Dim TotalLin As Currency
             
                 
             '`codpais`,`idenpais`,`nifresidencia`
-            Pais = UCase(DBLet(RS!Pais, "T"))
-            If Pais = "" Then Pais = "ESPAÑA"
+            PAIS = UCase(DBLet(RS!PAIS, "T"))
+            If PAIS = "" Then PAIS = "ESPAÑA"
             
-            If Pais = "ESPAÑA" Then
+            If PAIS = "ESPAÑA" Then
                 Linea = Linea & "'ES','1',NULL"
                 Identificacion = 0
             Else
                 'ESTRANJERO o INTRACOM
-                Linea = Linea & "'" & Mid(Pais, 1, 2) & "',2,'" & DBLet(RS!nifdatos, "T") & "'"
+                Linea = Linea & "'" & Mid(PAIS, 1, 2) & "',2,'" & DBLet(RS!nifdatos, "T") & "'"
                 Identificacion = 1
             End If
             Linea = Linea & ",'"
@@ -2240,9 +2248,9 @@ Dim TotalLin As Currency
             If Not IsNull(RS!tp3facpr) Then NF = NF + 1
             If NF = 1 Then
                 'SOLO HAY UNA base
-                Pais = " "
+                PAIS = " "
             Else
-                Pais = "C" 'mas de una base
+                PAIS = "C" 'mas de una base
             End If
             'IMPORTANTE.
             'Solo estamos cargando Bienes de inversion
@@ -2251,7 +2259,7 @@ Dim TotalLin As Currency
             Linea = Linea & "I"
         
             
-            Linea = Linea & "','" & Pais & "',"
+            Linea = Linea & "','" & PAIS & "',"
             '`fechaexp`,`fechaop`,
             If MismaFechaFra Then
             'Graba en los dos campos la misma fecha m es decir, la de RECEPCION
@@ -2289,24 +2297,24 @@ Dim TotalLin As Currency
            
            'Base UNO. SIEMPRE EXISTE
            TotalLin = RS!ti1facpr + RS!ba1facpr + DBLet(RS!tr1facpr, "N")
-           Pais = NF & "," & TransformaComasPuntos(CStr(RS!pi1facpr)) & "," & TransformaComasPuntos(CStr(RS!ba1facpr)) _
+           PAIS = NF & "," & TransformaComasPuntos(CStr(RS!pi1facpr)) & "," & TransformaComasPuntos(CStr(RS!ba1facpr)) _
                 & "," & TransformaComasPuntos(CStr(RS!ti1facpr)) & "," & TransformaComasPuntos(CStr(TotalLin))
-           Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr1facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr1facpr, "N"))) & ")"
+           PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr1facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr1facpr, "N"))) & ")"
             
            
-            CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+            CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
             NumRegElim = NumRegElim + 1
 
            
            'Base DOS si no es null
            If Not IsNull(RS!ba2facpr) Then
                 TotalLin = RS!ti2facpr + RS!ba2facpr + DBLet(RS!tr2facpr, "N")
-                Pais = NF & "," & TransformaComasPuntos(CStr(RS!pi2facpr)) & "," & TransformaComasPuntos(CStr(RS!ba2facpr)) _
+                PAIS = NF & "," & TransformaComasPuntos(CStr(RS!pi2facpr)) & "," & TransformaComasPuntos(CStr(RS!ba2facpr)) _
                 & "," & TransformaComasPuntos(CStr(RS!ti2facpr)) & "," & TransformaComasPuntos(CStr(TotalLin))
-                Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr2facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr2facpr, "N"))) & ")"
+                PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr2facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr2facpr, "N"))) & ")"
                 
                 'Insertar
-                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
                 NumRegElim = NumRegElim + 1
            End If
            
@@ -2314,12 +2322,12 @@ Dim TotalLin As Currency
            'Base TRES si no es null
            If Not IsNull(RS!ba3facpr) Then
                 TotalLin = RS!ti3facpr + RS!ba3facpr + DBLet(RS!tr3facpr, "N")
-                Pais = NF & "," & TransformaComasPuntos(CStr(RS!pi3facpr)) & "," & TransformaComasPuntos(CStr(RS!ba3facpr)) _
+                PAIS = NF & "," & TransformaComasPuntos(CStr(RS!pi3facpr)) & "," & TransformaComasPuntos(CStr(RS!ba3facpr)) _
                 & "," & TransformaComasPuntos(CStr(RS!ti3facpr)) & "," & TransformaComasPuntos(CStr(TotalLin))
-                Pais = Pais & "," & TransformaComasPuntos(CStr(DBLet(RS!pr3facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr3facpr, "N"))) & ")"
+                PAIS = PAIS & "," & TransformaComasPuntos(CStr(DBLet(RS!pr3facpr, "N"))) & "," & TransformaComasPuntos(CStr(DBLet(RS!tr3facpr, "N"))) & ")"
                 
                 'Insertar
-                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & Pais
+                CadenaInsert = CadenaInsert & ",(" & vUsu.Codigo & "," & NumRegElim & "," & Linea & PAIS
                 NumRegElim = NumRegElim + 1
            End If
            
@@ -2330,9 +2338,9 @@ Dim TotalLin As Currency
            
            'HACEMOS EL INSERT
            If Len(CadenaInsert) > 100000 Then
-                Pais = DevuelveInsertTmp340(0)
-                Pais = Pais & Mid(CadenaInsert, 2)
-                Conn.Execute Pais
+                PAIS = DevuelveInsertTmp340(0)
+                PAIS = PAIS & Mid(CadenaInsert, 2)
+                Conn.Execute PAIS
                 CadenaInsert = ""
            End If
            
@@ -2342,9 +2350,9 @@ Dim TotalLin As Currency
         RS.Close
            
         If CadenaInsert <> "" Then
-            Pais = DevuelveInsertTmp340(0)
-            Pais = Pais & Mid(CadenaInsert, 2)
-            Conn.Execute Pais
+            PAIS = DevuelveInsertTmp340(0)
+            PAIS = PAIS & Mid(CadenaInsert, 2)
+            Conn.Execute PAIS
         End If
 End Sub
 
@@ -2764,12 +2772,12 @@ End Sub
 'enviaremos el minimo y maximo para no hacer la comrpoabacion de los NIFS cada vez
 'Ej.  Si la empresa A va de 1 a 10   y la B del 11 al 16,
 'cuando compreube la B no tengo que empezar en el 1 si no en el 11
-Private Function ComprobarNifs340(Minimo As Long, maximo As Long) As Integer
+Private Function ComprobarNifs340(Minimo As Long, Maximo As Long) As Integer
     On Error GoTo EComprobarNifs340
     ComprobarNifs340 = -1
     
     Linea = "select nifdeclarado,codpais,clavelibro,idfactura,fechaexp from tmp340 where codusu = " & vUsu.Codigo
-    Linea = Linea & " AND  codigo>=" & Minimo & " and codigo <= " & maximo
+    Linea = Linea & " AND  codigo>=" & Minimo & " and codigo <= " & Maximo
     Linea = Linea & " group by nifdeclarado"
     RS.Open Linea, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Linea = ""
@@ -2815,13 +2823,13 @@ End Function
 
 
 'Hayque pasarlo a bus.bas
-Public Sub LanzaNotepad(ByVal Nombrefichero As String, Descripcion As String)
+Public Sub LanzaNotepad(ByVal NombreFichero As String, Descripcion As String)
     On Error Resume Next
     'Solo sirve para los archivos
-    Shell "notepad " & Nombrefichero, vbNormalFocus
+    Shell "notepad " & NombreFichero, vbNormalFocus
     If Err.Number <> 0 Then
-        Nombrefichero = "Imposible mostrar archivo para: " & Descripcion & vbCrLf & "Fichero: " & Nombrefichero
-        MsgBox Nombrefichero, vbExclamation
+        NombreFichero = "Imposible mostrar archivo para: " & Descripcion & vbCrLf & "Fichero: " & NombreFichero
+        MsgBox NombreFichero, vbExclamation
         Err.Clear
     End If
 End Sub
@@ -2998,7 +3006,7 @@ Dim Aux As String
            
                 
             '`codpais`,`idenpais`,`nifresidencia`
-            Aux = UCase(DBLet(R!Pais, "T"))
+            Aux = UCase(DBLet(R!PAIS, "T"))
             If Aux = "" Then Aux = "ESPAÑA"
             
             If Aux = "ESPAÑA" Then

@@ -1708,7 +1708,7 @@ Private Sub PonDatosIVA()
 End Sub
 
 
-Private Sub PonerElIva(numero As Integer)
+Private Sub PonerElIva(Numero As Integer)
 Dim J As Integer
 Dim H As Integer
 Dim Vcampo As Integer
@@ -2272,22 +2272,14 @@ Private Sub PonerIntraComYCampo()
         If Not IsNull(miRsAux!C2) Then
             Text1(26).Text = Format(miRsAux!C2, FormatoImporte)
            
-           'Octubre 2015
-           'Error corregido a raiz de llamada Montifrut
-           ' El iva , lo cargamos en Generacion de IVA
-           ' y aqui NO lo restamos
-           '' 'EL IVA en BI
-           '' Importe = ImporteFormateado(Text1(22).Text)
-           ''
-           '' Importe = Importe - miRsAux!C2
-           '' Text1(22).Text = Format(Importe, FormatoImporte)
-           ''
-           '' 'IMPONIBLE en BI
-           '' Importe = ImporteFormateado(Text1(21).Text)
-           '' Importe = Importe - miRsAux!C1
-           '' Text1(21).Text = Format(Importe, FormatoImporte)
-            
             Text1(25).Text = Format(miRsAux!C1, FormatoImporte)
+            
+            
+            'Va tambien en clientes
+            Text1(11).Text = Format(miRsAux!C2, FormatoImporte)
+           
+            Text1(9).Text = Format(miRsAux!C1, FormatoImporte)
+            
         End If
     End If
     miRsAux.Close
