@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmListado2 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Form1"
@@ -1227,7 +1227,7 @@ End Sub
 Private Sub Form_Load()
         
     Me.Icon = frmPpal.Icon
-    limpiar Me
+    Limpiar Me
     Me.Fr340.visible = False
     FrameTraspasoBancoSecciones.visible = False
     FrameLog.visible = False
@@ -1357,7 +1357,7 @@ Private Sub ImgCd1_Click(Index As Integer)
     cd1.InitDir = "c:\"
     cd1.CancelError = False
     If Index = 0 Then
-        cd1.Filter = "RTF (*.rtf)|*.rtf|DAT (*.dat)|*.dat"
+        cd1.Filter = "DAT (*.dat)|*.dat|RTF (*.rtf)|*.rtf"
         cd1.FilterIndex = 0
     End If
     cd1.ShowOpen
@@ -2340,7 +2340,7 @@ End Function
 
 
 Private Sub CargaListLog()
-Dim IT As ListItem
+Dim It As ListItem
  'CadenaConsulta = "select slog.fecha,titulo,usuario,pc,descripcion from slog,tmppresu1 "
   '  CadenaConsulta = CadenaConsulta & " where tmppresu1.codusu=" & vUsu.Codigo & " and slog.accion=tmppresu1.codigo"
    
@@ -2349,7 +2349,7 @@ Dim IT As ListItem
     Cad = "Select * from tmppresu1 where tmppresu1.codusu=" & vUsu.Codigo & " ORDER BY codigo"
     miRsAux.Open Cad, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
-        Set IT = ListView1(0).ListItems.Add(, CStr("K" & miRsAux!Codigo), miRsAux!Titulo)
+        Set It = ListView1(0).ListItems.Add(, CStr("K" & miRsAux!Codigo), miRsAux!Titulo)
         
         miRsAux.MoveNext
     Wend
@@ -2359,7 +2359,7 @@ Dim IT As ListItem
     Cad = "Select usuario from slog group by 1 order by 1"
     miRsAux.Open Cad, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
-        Set IT = ListView1(1).ListItems.Add(, miRsAux!Usuario, miRsAux!Usuario)
+        Set It = ListView1(1).ListItems.Add(, miRsAux!Usuario, miRsAux!Usuario)
             
     
         miRsAux.MoveNext

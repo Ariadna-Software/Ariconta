@@ -638,7 +638,7 @@ Dim Modo As Byte
 Dim jj As Long
 Dim SQL As String
 
-Dim It As ListItem
+Dim IT As ListItem
 
 Dim ImporteFacturaImportada As Currency
 Dim FechaFraImportada As Date
@@ -1312,9 +1312,9 @@ Private Sub CargaCentros()
     SQL = "Select * FROM importnavcentros order by  CodCentro  "
     miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
-        Set It = ListView1(0).ListItems.Add
-        It.Text = miRsAux.Fields(0)
-        It.SubItems(1) = miRsAux.Fields(1)
+        Set IT = ListView1(0).ListItems.Add
+        IT.Text = miRsAux.Fields(0)
+        IT.SubItems(1) = miRsAux.Fields(1)
         miRsAux.MoveNext
     Wend
     miRsAux.Close
@@ -1328,9 +1328,9 @@ Private Sub CargaConceptos()
     SQL = "select * from importnavconceptos order by concepto  "
     miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
-        Set It = ListView1(1).ListItems.Add
-        It.Text = miRsAux.Fields(0)
-        It.SubItems(1) = miRsAux.Fields(1)
+        Set IT = ListView1(1).ListItems.Add
+        IT.Text = miRsAux.Fields(0)
+        IT.SubItems(1) = miRsAux.Fields(1)
         miRsAux.MoveNext
     Wend
     miRsAux.Close
@@ -1345,10 +1345,10 @@ Private Sub CargaHistorico()
     ListView1(2).ListItems.Clear
     miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
-        Set It = ListView1(2).ListItems.Add
-        It.Text = miRsAux.Fields(0)
-        It.SubItems(1) = miRsAux.Fields(1)
-        It.SubItems(2) = miRsAux.Fields(2)
+        Set IT = ListView1(2).ListItems.Add
+        IT.Text = miRsAux.Fields(0)
+        IT.SubItems(1) = miRsAux.Fields(1)
+        IT.SubItems(2) = miRsAux.Fields(2)
         miRsAux.MoveNext
     Wend
     miRsAux.Close
@@ -1430,7 +1430,7 @@ Dim B As Boolean
     End If
     
     
-    ImportarFactura_ = True
+    ImportarFactura_ = B
     
     Screen.MousePointer = vbDefault
 End Function
@@ -1448,7 +1448,7 @@ Dim oTRAcADENA As String
 Dim Depuracion As Boolean
 Dim NF2 As Integer
 
-    On Error GoTo eProcesarFichero
+    On Error GoTo EProcesarFichero
     ProcesarFichero = False
     
     'Borramos la temporal
@@ -1475,6 +1475,11 @@ Dim NF2 As Integer
     TextoAProcesar = ""
     
     If UCase(Right(Ficher, 3)) = "DAT" Then
+    
+         While Not EOF(NF)
+                Line Input #NF, SQL
+                Linea = Linea & SQL
+         Wend
         'FICHERO .dat
         While Linea <> ""
             If Len(Linea) < 220 Then
@@ -1482,7 +1487,9 @@ Dim NF2 As Integer
             Else
                 SQL = Mid(Linea, 1, 220)
                 ColLineas.Add SQL
-                If Depuracion Then Print #NF2, SQL
+                If Depuracion Then
+                    If Mid(Linea, 66, 2) = "02" Then Print #NF2, SQL
+                End If
                 Linea = Mid(Linea, 221)
             End If
                 
@@ -1615,8 +1622,9 @@ Dim NF2 As Integer
         SQL = SQL & Mid(Linea, 68, 2) & "','" & Mid(Linea, 70, 2) & "','" & Mid(Linea, 72, 2) & "','"
         
         
-        'cajaformser,udformato  -> de ahi extraeremos las unidades
-        SQL = SQL & Mid(Linea, 74, 9) & "','" & Mid(Linea, 82, 6) & "','"
+        'cajaformser,cajaformserDec,udformato  -> de ahi extraeremos las unidades
+        'If Mid(Linea, 80, 3) <> "000" Then Stop
+        SQL = SQL & Mid(Linea, 74, 6) & "','" & Mid(Linea, 80, 3) & "','" & Mid(Linea, 82, 6) & "','"
         
         'precioventa,importeventa,precosteud,
         SQL = SQL & Mid(Linea, 88, 8) & "','" & Mid(Linea, 96, 10) & "','" & Mid(Linea, 106, 9) & "','"
@@ -1641,7 +1649,7 @@ Dim NF2 As Integer
         End If
         If SQL = "" Then
             TextoBusqueda = Mid(TextoBusqueda, 2) 'quitamos la primera cma
-            SQL = "INSERT INTO importnavtmp(tienda,numfac,fechafac,secuencial,articulo,area,seccion,subseccion,grupo,subgrupo,cajaformser,udformato,"
+            SQL = "INSERT INTO importnavtmp(tienda,numfac,fechafac,secuencial,articulo,area,seccion,subseccion,grupo,subgrupo,cajaformser,cajaformserDec,udformato,"
             SQL = SQL & "precioventa,importeventa,precosteud,imporcoste,porceniva,porcenrecequiv,precosteiva1,impcosteiva,signo,unidades) VALUES "
             SQL = SQL & TextoBusqueda
             
@@ -1661,7 +1669,7 @@ Dim NF2 As Integer
 
 
 
-eProcesarFichero:
+EProcesarFichero:
     If Err.Number <> 0 Then MuestraError Err.Number
     
 End Function
@@ -1799,19 +1807,24 @@ eComprobarDatosFichero:
     Set miRsAux = Nothing
 End Function
 
-
+Private Sub ImprimeLineaDebug(LineaDebug As String, Valor, Posiciones As Integer)
+    LineaDebug = LineaDebug & Right(String(Posiciones, " ") & Valor, Posiciones) & "|"
+End Sub
 
 Private Sub CalculoDeBases()
-Dim Base As Single
-Dim PorcenFranquicia As Single
-Dim Unidades As Single
-Dim Iva As Single
-Dim Intermedio As Single
-Dim PreCoste As Single
-Dim Margen As Single
-Dim Aux As Single
-Dim BaseImponible As Single
-Dim CosteSinPorcen As Single
+Dim Base As Currency
+Dim PorcenFranquicia As Currency
+Dim Unidades As Currency
+Dim Iva As Currency
+Dim Intermedio As Currency
+Dim PreCoste As Currency
+Dim Margen As Currency
+Dim Aux As Currency
+Dim BaseImponible As Currency
+Dim CosteSinPorcen As Currency
+
+Dim ImprimeLinea As Boolean   'Para el debug
+Dim LinDebug As String
 
     SQL = "select * from importnavtmp "
     
@@ -1821,16 +1834,37 @@ Dim CosteSinPorcen As Single
     miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
     
-       
-  
-   ' If miRsAux!seccion = 1 Then Stop
+       ImprimeLinea = False
+       LinDebug = ""
         
+       If miRsAux!seccion = 16 Then
+            'Stop
+            ImprimeLinea = True
+        End If
+        
+       'If miRsAux!seccion = 21 Then
+       '     If miRsAux!porceniva = "1000" Then
+       '         Stop
+       '         ImprimeLinea = True
+       '     End If
+       ' End If
+        
+        '0718647605270102220000010000100000000005000000500000000004000000040000210000000000000004800000048000                    0000000000000000100000000000C+
+        
+        'Ejemplo debug
+        '   Unid.   Coste   Venta   Imp. Coste  IVA Vta s/iva   Imp. V.s/iva    Margen  Cuota 5%    Base Imp.   IVA Total
+        '   1000    0,04    0,05    40,00   21,00   0,041   41,00   1,00    0,05    40,05   8,41    48,46
+
+               
         'UNIDADES
-        Base = Val(miRsAux!cajaformser) / 1000
+        Base = miRsAux!cajaformser + (miRsAux!cajaformserDec / 1000)
+       ' If miRsAux!cajaformserDec <> "000" Then Stop
+        
         Intermedio = Val(miRsAux!udformato)
         Unidades = CCur(Base * Intermedio)
         If miRsAux!signo = "-" Then Unidades = -Unidades
             
+        ImprimeLineaDebug LinDebug, Unidades, 8
             
         'IVA
         '-------------------
@@ -1839,36 +1873,46 @@ Dim CosteSinPorcen As Single
                 
         'Coste con IVA
         PreCoste = miRsAux!precosteud / 1000
-        PreCoste = PreCoste * Unidades
-        'PreCoste = Round2(PreCoste, 3)
+        ImprimeLineaDebug LinDebug, PreCoste, 8
         
-        'PVP sin IVA
+        PreCoste = Round2(PreCoste * Unidades, 2)
+   
+        'DEBGU: Venta   Imp. Coste  IVA Vta s/iva   Imp. V.s/iva    Margen  Cuota 5%    Base Imp.   IVA Total
+        'PVP sin IVA.   Octubre 2016 UNITARIO
         Base = miRsAux!precioventa / 100
-       ' Base = Round((Base / (1 + Iva)) * Unidades, 3)
-        Base = (Base / (1 + Iva)) * Unidades
-        BaseImponible = Base
+        ImprimeLineaDebug LinDebug, Base, 8
+        Base = Round(((Base / Unidades) / (1 + Iva)) * Unidades, 3)
         
+        'Debug. Im`porte coste:
+        ImprimeLineaDebug LinDebug, PreCoste, 8
+        ImprimeLineaDebug LinDebug, Iva * 100, 10
+        
+        'BaseImponible = Base * Unidades
+        BaseImponible = Round2(Base * Unidades, 2)
+    
+        'Intermedio = Base - PreCoste
+        Intermedio = BaseImponible - PreCoste
+        Intermedio = Round2(BaseImponible - PreCoste, 2)
+        
+        Margen = (Intermedio * PorcenFranquicia)
+        Margen = Intermedio - Margen
+       
+       
+        'Base = Round(PreCoste + (Intermedio * PorcenFranquicia), 2)
+        
+        ''ImprimeLineaDebug LinDebug, Base, 8
+        
+       ' Intermedio = Base * Iva
+       ' Iva = Intermedio
+        ''ImprimeLineaDebug LinDebug, Iva, 8
+        
+       ' Intermedio = Base + Iva
+        ''ImprimeLineaDebug LinDebug, Intermedio, 8
 
-        Intermedio = Base - PreCoste
-        
-        
-        Margen = CSng(Intermedio * PorcenFranquicia)
-        
-      
-        'imponible
-        'Base = Round2(PreCoste + Margen, 3)   'redondeando
-        'Base = Truncar(PreCoste + Margen, 4)   'redondeando
-        Base = PreCoste + Margen     'in tocar
-        
-        Intermedio = Base * Iva
-        Iva = Intermedio
-        
-        
-        
-        
-        SQL = "UPDATE importnavtmp SET basecalculada =" & TransformaComasPuntos(CStr(Base))
-        SQL = SQL & ", ivacalculado=" & TransformaComasPuntos(CStr(Iva))
-        SQL = SQL & ", coste=" & TransformaComasPuntos(CStr(0))  'estaba CosteSinPorcen
+        If ImprimeLinea Then Debug.Print LinDebug
+        SQL = "UPDATE importnavtmp SET coste =" & TransformaComasPuntos(CStr(PreCoste))
+        SQL = SQL & ", margenNeto=" & TransformaComasPuntos(CStr(Intermedio))
+        SQL = SQL & ", margenBruto=" & TransformaComasPuntos(CStr(Margen))  'estaba CosteSinPorcen
         SQL = SQL & " WHERE secuencial = " & miRsAux!secuencial
         Conn.Execute SQL
         miRsAux.MoveNext
@@ -1884,22 +1928,45 @@ Dim CosteSinPorcen As Single
     
     
     'ANTES
-    'SQL = SQL & "select seccion,(porceniva + 0)/100,sum(basecalculada+coste),round(sum(ivacalculado),2),0,tipoiva"
-    'truncate(sum(basecalculada),2),TRUNCATE(sum(ivacalculado),2)
+    'SQL = SQL & "select seccion,(porceniva + 0)/100,truncate(sum(basecalculada+coste),2),round(sum(ivacalculado),2),0,tipoiva"
     SQL = SQL & "select seccion,(porceniva + 0)/100,truncate(sum(basecalculada+coste),2),round(sum(ivacalculado),2),0,tipoiva"
     
     
+    
     SQL = SQL & " from importnavtmp group by 1,2"
+    'Conn.Execute SQL
+    
+    
+    SQL = "select seccion,(porceniva + 0)/100 porceiva,sum(coste) coste,sum(margenneto) margenN,round(sum(margenbruto),2) margenB,0,tipoiva"
+    SQL = SQL & " from importnavtmp group by 1,2"
+    miRsAux.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = ""
+    While Not miRsAux.EOF
+        'SQL = "INSERT INTO importanatmptotal(seccion,porceniva,base,iva,Modificad,tipoiva) "
+        Iva = CCur(miRsAux!porceiva)
+        PreCoste = miRsAux!coste
+        Margen = miRsAux!margenN
+        Intermedio = miRsAux!margenB
+        PreCoste = PreCoste + Margen - Intermedio
+        Intermedio = (Iva * PreCoste) / 100
+        SQL = SQL & ", (" & miRsAux!seccion & "," & TransformaComasPuntos(CStr(miRsAux!porceiva)) & ","
+        SQL = SQL & TransformaComasPuntos(CStr(PreCoste)) & "," & TransformaComasPuntos(CStr(Intermedio))
+        SQL = SQL & ",0," & miRsAux!TipoIVA & ")"
+    
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    
+    SQL = Mid(SQL, 2)
+    SQL = "INSERT INTO importanatmptotal(seccion,porceniva,base,iva,Modificad,tipoiva) VALUES " & SQL
     Conn.Execute SQL
-    
-    
     
     Set miRsAux = Nothing
     
 End Sub
 
-Private Sub ElLbl(ByRef Texto As String)
-    lblIndicador.Caption = Texto
+Private Sub ElLbl(ByRef TEXTO As String)
+    lblIndicador.Caption = TEXTO
     lblIndicador.Refresh
 End Sub
 Private Sub ImportarFactura()
@@ -1917,7 +1984,16 @@ Dim NumeroReg As Long
     ElLbl ""
     If CadenaDesdeOtroForm = "" Then Exit Sub
 
-
+    
+    'Vere si el fichero YA ha sido procesado
+    Fichero = Dir(CadenaDesdeOtroForm)
+    Fichero = DevuelveDesdeBD("fecha", "importnavhcofich", "fichero", Fichero, "T")
+    If Fichero <> "" Then
+        MsgBox "El fichero ya ha sido procesado con anterioridad. " & Fichero, vbExclamation
+        Exit Sub
+    End If
+    
+    
     If Not BloqueoManual(True, "Consum", "1") Then
         MsgBox "Proceso bloqueado por otro usuario", vbExclamation
         Exit Sub
@@ -2176,10 +2252,10 @@ Dim Cad As String
 End Function
 
 
-Private Function Truncar(Numero As Single, Decimales) As Single
-Dim Cadena As String
+Private Function Truncar(numero As Single, Decimales) As Single
+Dim CADENA As String
 
-    Cadena = Format(Numero, "#0.00000")
-    Cadena = Mid(Cadena, 1, Len(Cadena) - (5 - Decimales))
-    Truncar = CSng(Cadena)
+    CADENA = Format(numero, "#0.00000")
+    CADENA = Mid(CADENA, 1, Len(CADENA) - (5 - Decimales))
+    Truncar = CSng(CADENA)
 End Function

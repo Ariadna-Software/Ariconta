@@ -4,7 +4,7 @@ Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Begin VB.Form frmImportacionNavFra 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Totales factura consum"
-   ClientHeight    =   8100
+   ClientHeight    =   10530
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   9945
@@ -13,7 +13,7 @@ Begin VB.Form frmImportacionNavFra
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8100
+   ScaleHeight     =   10530
    ScaleWidth      =   9945
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
@@ -187,7 +187,7 @@ Begin VB.Form frmImportacionNavFra
       Index           =   0
       Left            =   240
       TabIndex        =   4
-      Top             =   7515
+      Top             =   9960
       Width           =   3255
       Begin VB.Label lblIndicador 
          Alignment       =   2  'Center
@@ -203,7 +203,7 @@ Begin VB.Form frmImportacionNavFra
       Height          =   375
       Left            =   7560
       TabIndex        =   1
-      Top             =   7680
+      Top             =   10080
       Width           =   1035
    End
    Begin VB.CommandButton cmdCancelar 
@@ -212,13 +212,13 @@ Begin VB.Form frmImportacionNavFra
       Height          =   375
       Left            =   8760
       TabIndex        =   2
-      Top             =   7680
+      Top             =   10080
       Width           =   1035
    End
    Begin MSAdodcLib.Adodc data1 
       Height          =   330
       Left            =   1440
-      Top             =   7800
+      Top             =   10080
       Visible         =   0   'False
       Width           =   1620
       _ExtentX        =   2858
@@ -264,13 +264,13 @@ Begin VB.Form frmImportacionNavFra
    End
    Begin MSDataGridLib.DataGrid DataGrid1 
       Bindings        =   "frmNavaImportacion.frx":000C
-      Height          =   5295
+      Height          =   7695
       Left            =   120
       TabIndex        =   7
       Top             =   2160
       Width           =   9615
       _ExtentX        =   16960
-      _ExtentY        =   9340
+      _ExtentY        =   13573
       _Version        =   393216
       AllowUpdate     =   0   'False
       HeadLines       =   1
@@ -331,7 +331,7 @@ Begin VB.Form frmImportacionNavFra
    Begin MSAdodcLib.Adodc data2 
       Height          =   330
       Left            =   4440
-      Top             =   7560
+      Top             =   9840
       Visible         =   0   'False
       Width           =   1620
       _ExtentX        =   2858
@@ -565,7 +565,7 @@ Begin VB.Form frmImportacionNavFra
       Height          =   255
       Left            =   3960
       TabIndex        =   6
-      Top             =   7680
+      Top             =   9960
       Width           =   2055
    End
    Begin VB.Label Label10 
@@ -582,7 +582,7 @@ Begin VB.Form frmImportacionNavFra
       Height          =   255
       Left            =   240
       TabIndex        =   3
-      Top             =   8220
+      Top             =   10500
       Visible         =   0   'False
       Width           =   3495
    End
@@ -677,22 +677,22 @@ End Sub
 
 
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
-    If Not data1.Recordset.EOF And gridCargado And Modo = 4 Then
+    If Not Data1.Recordset.EOF And gridCargado And Modo = 4 Then
        CargaTxtAux True, False
        'txtAux.SelStart = Len(Me.txtAux.Text)
        
-       txtAux(0).SetFocus
+       txtaux(0).SetFocus
        
-       txtAux(0).SelStart = 0
-       txtAux(0).SelLength = Len(Me.txtAux(0).Text)
-       txtAux(0).Refresh
+       txtaux(0).SelStart = 0
+       txtaux(0).SelLength = Len(Me.txtaux(0).Text)
+       txtaux(0).Refresh
        PonIndicador
     End If
 End Sub
 
 Private Sub PonIndicador()
 On Error Resume Next
-       Me.lblIndicador.Caption = data1.Recordset.AbsolutePosition & " de " & data1.Recordset.RecordCount
+       Me.lblIndicador.Caption = Data1.Recordset.AbsolutePosition & " de " & Data1.Recordset.RecordCount
        If Err.Number <> 0 Then
             Me.lblIndicador.Caption = ""
             Err.Clear
@@ -705,7 +705,7 @@ Private Sub Form_Activate()
          PrimeraVez = False
          CargaDatosFra
          CargaTxtAux True, False
-         PonFoco txtAux(0)
+         PonFoco txtaux(0)
     End If
 End Sub
 
@@ -754,11 +754,11 @@ On Error GoTo ECarga
     Cad = "select seccion,descripcion,base,porceniva,iva,base+iva from "
     Cad = Cad & " importanatmptotal,importnavconceptos where seccion=concepto ORDER BY seccion, iva"
 
-    data1.ConnectionString = Conn
-    data1.RecordSource = Cad
-    data1.CursorType = adOpenDynamic
-    data1.LockType = adLockPessimistic
-    data1.Refresh
+    Data1.ConnectionString = Conn
+    Data1.RecordSource = Cad
+    Data1.CursorType = adOpenDynamic
+    Data1.LockType = adLockPessimistic
+    Data1.Refresh
    
     
     PrimeraVez = False
@@ -820,7 +820,7 @@ End Sub
 
 
 'Esta funcion sustituye a LlamaLineas
-Private Sub CargaTxtAux(visible As Boolean, limpiar As Boolean)
+Private Sub CargaTxtAux(visible As Boolean, Limpiar As Boolean)
 'IN: visible: si es true ponerlos visibles en la posición adecuada
 '    limpiar: si es true vaciar los txtAux
 Dim alto As Single
@@ -829,9 +829,9 @@ Dim J As Byte
 
     If Not visible Then
         'Fijamos el alto (ponerlo en la parte inferior del form)
-        txtAux(0).Top = 290
-        txtAux(0).visible = visible
-        txtAux(1).visible = visible
+        txtaux(0).Top = 290
+        txtaux(0).visible = visible
+        txtaux(1).visible = visible
     Else
         DeseleccionaGrid Me.DataGrid1
         If DataGrid1.Row < 0 Then
@@ -841,17 +841,17 @@ Dim J As Byte
         End If
         
         For J = 0 To 3
-            If limpiar Then
-                txtAux(J).Text = ""
+            If Limpiar Then
+                txtaux(J).Text = ""
             Else
-                txtAux(J).Text = Format(data1.Recordset.Fields(J + 2), FormatoImporte)
+                txtaux(J).Text = Format(Data1.Recordset.Fields(J + 2), FormatoImporte)
             End If
-            txtAux(J).Top = alto
-            txtAux(J).Locked = J > 0
-            txtAux(J).Height = DataGrid1.RowHeight
-            txtAux(J).Left = DataGrid1.Columns(J + 2).Left + 130
-            txtAux(J).Width = DataGrid1.Columns(J + 2).Width - 10
-            txtAux(J).visible = visible
+            txtaux(J).Top = alto
+            txtaux(J).Locked = J > 0
+            txtaux(J).Height = DataGrid1.RowHeight
+            txtaux(J).Left = DataGrid1.Columns(J + 2).Left + 130
+            txtaux(J).Width = DataGrid1.Columns(J + 2).Width - 10
+            txtaux(J).visible = visible
         Next
         
 
@@ -889,8 +889,8 @@ End Sub
 
 
 Private Sub txtAux_GotFocus(Index As Integer)
-    txtAux(Index).SelStart = 0
-    txtAux(Index).SelLength = Len(txtAux(Index).Text)
+    txtaux(Index).SelStart = 0
+    txtaux(Index).SelLength = Len(txtaux(Index).Text)
 End Sub
 
 Private Sub TxtAux_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer)
@@ -903,13 +903,13 @@ On Error GoTo EKeyD
         Case 38 'Desplazamieto Fecha Hacia Arriba
                 If DataGrid1.Bookmark > 0 Then
                     DataGrid1.Bookmark = DataGrid1.Bookmark - 1
-                    PonFoco txtAux(Index)
+                    PonFoco txtaux(Index)
                 End If
         
         Case 40 'Desplazamiento Flecha Hacia Abajo
                 PasarSigReg
-                Me.txtAux(Index).SelStart = 0
-                Me.txtAux(Index).SelLength = Len(Me.txtAux(Index).Text)
+                Me.txtaux(Index).SelStart = 0
+                Me.txtaux(Index).SelLength = Len(Me.txtaux(Index).Text)
                 'txtaux.Refresh
     End Select
 EKeyD:
@@ -936,7 +936,7 @@ End Sub
 Private Sub txtAux_LostFocus(Index As Integer)
 Dim Importe As Currency
     If Screen.ActiveControl.Name = "cmdCancelar" Then Exit Sub
-    With txtAux(Index)
+    With txtaux(Index)
         .Text = Trim(.Text)
         If .Text = "" Then
             .Text = "0,00"
@@ -945,7 +945,7 @@ Dim Importe As Currency
                     MsgBox "Importes deben ser numéricos.", vbExclamation
                     On Error Resume Next
                     .Text = "0,00"
-                    PonFoco txtAux
+                    PonFoco txtaux
                     Exit Sub
                 End If
                 
@@ -999,7 +999,7 @@ End Sub
 
 
 Private Sub LimpiarCampos()
-    limpiar Me   'Metodo general: Limpia los controles TextBox
+    Limpiar Me   'Metodo general: Limpia los controles TextBox
     'Aqui va el especifico de cada form es
     '### a mano
 End Sub
@@ -1011,19 +1011,19 @@ End Sub
 
 
 Private Sub BotonModificar()
-    If data1.Recordset.EOF Then Exit Sub
+    If Data1.Recordset.EOF Then Exit Sub
     PonerModo 4
     CargaTxtAux True, True
-    PonleFoco txtAux
+    PonleFoco txtaux
 End Sub
 
 
 Private Function DatosOk() As Boolean
 'Solo se actualiza el campo de Existencia Real
-    txtAux(0).Text = Trim(txtAux(0).Text)
+    txtaux(0).Text = Trim(txtaux(0).Text)
     DatosOk = False
-    If txtAux(0).Text <> "" Then
-        If EsNumerico(txtAux(0).Text) Then DatosOk = True
+    If txtaux(0).Text <> "" Then
+        If EsNumerico(txtaux(0).Text) Then DatosOk = True
     End If
 End Function
 
@@ -1044,11 +1044,11 @@ End Sub
 
 Private Sub PasarSigReg()
 'Nos situamos en el siguiente registro
-    If DataGrid1.Bookmark < data1.Recordset.RecordCount Then
+    If DataGrid1.Bookmark < Data1.Recordset.RecordCount Then
 '        DataGrid1.Row = DataGrid1.Row + 1
         DataGrid1.Bookmark = DataGrid1.Bookmark + 1
-        PonleFoco Me.txtAux(0)
-    ElseIf DataGrid1.Bookmark = data1.Recordset.RecordCount Then
+        PonleFoco Me.txtaux(0)
+    ElseIf DataGrid1.Bookmark = Data1.Recordset.RecordCount Then
        PonleFoco cmdAceptar
     End If
     
@@ -1064,14 +1064,14 @@ Dim NumReg As Long
         
         If ActualizarExistencia() Then
             
-            NumReg = data1.Recordset.AbsolutePosition
+            NumReg = Data1.Recordset.AbsolutePosition
             CargaGrid
             
                     
-            If NumReg < data1.Recordset.RecordCount Then
-                data1.Recordset.Move NumReg - 1
+            If NumReg < Data1.Recordset.RecordCount Then
+                Data1.Recordset.Move NumReg - 1
             Else
-                data1.Recordset.MoveLast
+                Data1.Recordset.MoveLast
             End If
         End If
 
@@ -1099,20 +1099,20 @@ Dim Cantidad As Currency
         
 
 
-    Cantidad = TransformaPuntosComas(txtAux(0).Text)
+    Cantidad = TransformaPuntosComas(txtaux(0).Text)
     
    
     
-    If Cantidad <> data1.Recordset!Base Then
+    If Cantidad <> Data1.Recordset!Base Then
     
         
         SQL = "UPDATE importanatmptotal SET base =  " & TransformaComasPuntos(CStr(Cantidad))
-        Cantidad = (Cantidad * data1.Recordset!porceniva) / 100
+        Cantidad = (Cantidad * Data1.Recordset!porceniva) / 100
         Cantidad = Round(Cantidad, 2)
         SQL = SQL & " , iva=" & TransformaComasPuntos(CStr(Cantidad))
         SQL = SQL & " , Modificad=1"
-        SQL = SQL & " WHERE seccion = " & data1.Recordset!seccion & " AND porceniva="
-        SQL = SQL & TransformaComasPuntos(CStr(data1.Recordset!porceniva))
+        SQL = SQL & " WHERE seccion = " & Data1.Recordset!seccion & " AND porceniva="
+        SQL = SQL & TransformaComasPuntos(CStr(Data1.Recordset!porceniva))
         Conn.Execute SQL
         
         
