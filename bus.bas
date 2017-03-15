@@ -1500,3 +1500,29 @@ Dim Cad As String
     
 End Function
 
+
+
+
+
+
+Public Function Round2(Number As Variant, Optional NumDigitsAfterDecimals As Long) As Variant
+Dim ent As Integer
+Dim Cad As String
+  
+  ' Comprobaciones
+  If Not IsNumeric(Number) Then
+    Err.Raise 13, "Round2", "Error de tipo. Ha de ser un número."
+    Exit Function
+  End If
+  If NumDigitsAfterDecimals < 0 Then
+    Err.Raise 0, "Round2", "NumDigitsAfterDecimals no puede ser negativo."
+    Exit Function
+  End If
+  
+  ' Redondeo.
+  Cad = "0"
+  If NumDigitsAfterDecimals <> 0 Then Cad = Cad & "." & String(NumDigitsAfterDecimals, "0")
+  Round2 = Format(Number, Cad)
+  
+End Function
+

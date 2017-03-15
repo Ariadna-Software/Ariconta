@@ -816,14 +816,14 @@ Dim SQL As String
     
     '### a mano
     SQL = "Seguro que desea eliminar la linea de histórico:" & vbCrLf
-    SQL = SQL & vbCrLf & "Inmovilizado: " & Adodc1.Recordset.Fields(0)
-    SQL = SQL & vbCrLf & "Denominación: " & Adodc1.Recordset.Fields(1)
-    SQL = SQL & vbCrLf & "Fecha       : " & Adodc1.Recordset.Fields(2)
-    SQL = SQL & vbCrLf & "Importe(€)  : " & Adodc1.Recordset.Fields(3)
+    SQL = SQL & vbCrLf & "Codigo: " & Adodc1.Recordset.Fields(0)
+    SQL = SQL & vbCrLf & "Centro: " & Adodc1.Recordset.Fields(1)
+    SQL = SQL & vbCrLf & "Seccion       : " & Adodc1.Recordset.Fields(2)
+    SQL = SQL & vbCrLf & "Nombre  : " & Adodc1.Recordset.Fields(3)
     If MsgBox(SQL, vbQuestion + vbYesNoCancel) = vbYes Then
         'Hay que eliminar
-        SQL = "Delete from importnavconcepcentro where codinmov=" & Adodc1.Recordset!Codinmov
-        SQL = SQL & " AND fechainm ='" & Format(Adodc1.Recordset!fechainm, FormatoFecha) & "';"
+        SQL = "Delete from importnavconcepcentro where codcentro=" & Adodc1.Recordset!codcentro
+        SQL = SQL & " AND codconcepto =" & Adodc1.Recordset!codconcepto & ";"
         Conn.Execute SQL
         CargaGrid ""
         Adodc1.Recordset.Cancel
@@ -1016,7 +1016,7 @@ Private Sub Form_Load()
     CadAncho = False
     PonerOpcionesMenu  'En funcion del usuario
     'Cadena consulta
-    CadenaConsulta = "select  importnavconcepcentro.codcentro,importnavcentros.Descripcion, codconcepto,"
+    CadenaConsulta = "select  importnavconcepcentro.codcentro,importnavcentros.Descripcion ElCentro, codconcepto,"
     CadenaConsulta = CadenaConsulta & " importnavconceptos.descripcion,importnavconcepcentro.codmacta,nommacta"
     CadenaConsulta = CadenaConsulta & " from importnavconcepcentro inner join cuentas on importnavconcepcentro.codmacta=cuentas.codmacta"
     CadenaConsulta = CadenaConsulta & " left join importnavcentros on importnavconcepcentro.codcentro=importnavcentros.codcentro"
@@ -1837,7 +1837,7 @@ Dim LinDebug As String
        ImprimeLinea = False
        LinDebug = ""
         
-       If miRsAux!seccion = 16 Then
+       If miRsAux!seccion = 3 Then
             'Stop
             ImprimeLinea = True
         End If
@@ -2128,7 +2128,7 @@ Dim Aux As String
     
     
     'Las bases
-    Aux = "select seccion,codmacta,base from importanatmptotal left join importnavconcepcentro  "
+    Aux = "select seccion,codmacta,sum(base) from importanatmptotal left join importnavconcepcentro  "
     Aux = Aux & " on seccion=codconcepto And codcentro = " & RecuperaValor(CadenaDesdeOtroForm, 3)
     Aux = Aux & " group by seccion ORDER BY seccion"
     miRsAux.Open Aux, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
@@ -2230,26 +2230,6 @@ End Sub
 
 
 
-Public Function Round2(Number As Variant, Optional NumDigitsAfterDecimals As Long) As Variant
-Dim ent As Integer
-Dim Cad As String
-  
-  ' Comprobaciones
-  If Not IsNumeric(Number) Then
-    Err.Raise 13, "Round2", "Error de tipo. Ha de ser un número."
-    Exit Function
-  End If
-  If NumDigitsAfterDecimals < 0 Then
-    Err.Raise 0, "Round2", "NumDigitsAfterDecimals no puede ser negativo."
-    Exit Function
-  End If
-  
-  ' Redondeo.
-  Cad = "0"
-  If NumDigitsAfterDecimals <> 0 Then Cad = Cad & "." & String(NumDigitsAfterDecimals, "0")
-  Round2 = Format(Number, Cad)
-  
-End Function
 
 
 Private Function Truncar(numero As Single, Decimales) As Single

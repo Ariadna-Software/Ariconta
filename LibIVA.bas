@@ -950,6 +950,10 @@ Dim PAIS As String
         Aux = RS!razosoci
         Aux = Replace(Aux, "º", " ", 1)
         Aux = Replace(Aux, "ª", " ", 1)
+        Aux = Replace(Aux, "`", "´", 1)
+        Aux = Replace(Aux, "(", " ", 1)
+        Aux = Replace(Aux, ")", " ", 1)
+        Aux = Replace(Aux, "  ", " ", 1)
         Linea = Linea & DatosTexto(Aux, 40)
         
         Linea = Linea & "D"
@@ -1076,8 +1080,17 @@ Dim PAIS As String
         Linea = Linea & Cad
         
         
+                
+        'Febrero 2017
+        'De la 263 a la 283 en blanco
+        Linea = Mid(Linea & Space(100), 1, 283)
+        Linea = Linea & DatosNumeroDec340((0), 16)
+        
+
+        
+        
+        
         'Hasta final de lineas
-       
         Cad = Space(300)
         Linea = Mid(Linea & Cad, 1, 500)
         Print #NF, Linea

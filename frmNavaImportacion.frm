@@ -951,7 +951,11 @@ Dim Importe As Currency
                 
                 
                 'Es numerico
-                Cad = TransformaPuntosComas(.Text)
+                If InStr(1, .Text, ",") > 0 Then
+                    Cad = ImporteFormateado(.Text)
+                Else
+                    Cad = TransformaPuntosComas(.Text)
+                End If
                 If CadenaCurrency(Cad, Importe) Then .Text = Format(Importe, "0.00")
                     
                 
@@ -1098,8 +1102,12 @@ Dim Cantidad As Currency
     
         
 
-
-    Cantidad = TransformaPuntosComas(txtaux(0).Text)
+    If InStr(1, txtaux(0).Text, ",") > 0 Then
+        Cad = ImporteFormateado(txtaux(0).Text)
+    Else
+        Cad = TransformaPuntosComas(txtaux(0).Text)
+    End If
+    Cantidad = TransformaPuntosComas(Cad)
     
    
     
@@ -1108,7 +1116,7 @@ Dim Cantidad As Currency
         
         SQL = "UPDATE importanatmptotal SET base =  " & TransformaComasPuntos(CStr(Cantidad))
         Cantidad = (Cantidad * Data1.Recordset!porceniva) / 100
-        Cantidad = Round(Cantidad, 2)
+        Cantidad = Round2(Cantidad, 2)
         SQL = SQL & " , iva=" & TransformaComasPuntos(CStr(Cantidad))
         SQL = SQL & " , Modificad=1"
         SQL = SQL & " WHERE seccion = " & Data1.Recordset!seccion & " AND porceniva="
@@ -1141,7 +1149,7 @@ Private Sub CargaDatosFra()
     Me.txtDatos(1).Text = miRsAux.Fields(1)
     Me.txtDatos(2).Text = Format(miRsAux.Fields(2), "dd/mm/yyyy")
     Me.txtDatos(3).Text = miRsAux.Fields(3)
-    Me.Text3.Text = Format(Now, "dd/mm/yyyy")
+    Me.Text3.Text = txtDatos(2).Text
     Me.txtDatos(5).Text = miRsAux.Fields(0) & " " & miRsAux.Fields(1)
     miRsAux.Close
     
